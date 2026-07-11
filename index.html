@@ -12,12 +12,12 @@ SPDX-License-Identifier: BSD-3-Clause
     <meta name="theme-color" content="#f1efe8" />
     <meta
       name="description"
-      content="RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、現実世界で機能する学習ポリシーをロボットに実装します。"
+      content="RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、現実世界で機能するAIをロボットに実装します。"
     />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://rlrk-dev.github.io/" />
     <link rel="sitemap" type="application/xml" href="https://rlrk-dev.github.io/sitemap.xml" />
-    <title>RLR 柏の葉 — 現実から学ぶポリシーを、確かな動きへ。</title>
+    <title>RLR 柏の葉 — 現実から学ぶポリシーを確かな動きへ</title>
 
     <style>
       :root {
@@ -305,51 +305,6 @@ SPDX-License-Identifier: BSD-3-Clause
         line-height: 1.9;
       }
 
-      .hero-meta {
-        display: flex;
-        gap: 30px;
-        align-items: center;
-        margin-top: 54px;
-      }
-
-      .scroll-cue {
-        display: inline-flex;
-        gap: 12px;
-        align-items: center;
-        font-family: var(--mono);
-        font-size: 10px;
-        font-weight: 600;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-      }
-
-      .scroll-cue span {
-        display: grid;
-        width: 38px;
-        height: 38px;
-        place-items: center;
-        border: 1px solid var(--line);
-        border-radius: 50%;
-        transition:
-          color 180ms ease,
-          background-color 180ms ease;
-      }
-
-      .scroll-cue:hover span,
-      .scroll-cue:focus-visible span {
-        color: var(--white);
-        background: var(--forest);
-      }
-
-      .hero-note {
-        color: var(--ink-soft);
-        font-family: var(--mono);
-        font-size: 10px;
-        letter-spacing: 0.12em;
-        line-height: 1.6;
-        text-transform: uppercase;
-      }
-
       .hero-art {
         position: relative;
         min-height: min(70svh, 720px);
@@ -497,10 +452,11 @@ SPDX-License-Identifier: BSD-3-Clause
         margin: 0;
         color: rgba(250, 249, 245, 0.7);
         font-family: var(--serif);
-        font-size: clamp(42px, 6vw, 86px);
+        font-size: clamp(42px, 5vw, 72px);
         font-weight: 500;
         letter-spacing: -0.05em;
         line-height: 1.25;
+        white-space: nowrap;
       }
 
       .purpose-statement em {
@@ -1022,15 +978,6 @@ SPDX-License-Identifier: BSD-3-Clause
           font-size: 16px;
         }
 
-        .hero-meta {
-          justify-content: space-between;
-          margin-top: 38px;
-        }
-
-        .hero-note {
-          text-align: right;
-        }
-
         .hero-art {
           min-height: 480px;
           border-radius: 12px;
@@ -1039,6 +986,10 @@ SPDX-License-Identifier: BSD-3-Clause
         .purpose-bottom {
           grid-template-columns: 1fr;
           margin-top: 58px;
+        }
+
+        .purpose-statement {
+          white-space: normal;
         }
 
         .purpose-quote {
@@ -1172,24 +1123,12 @@ SPDX-License-Identifier: BSD-3-Clause
           <p class="eyebrow">Learning in the real world</p>
           <h1 class="hero-title" id="hero-title">
             現実から学ぶ<br />
-            <span class="accent">ポリシーを、</span><br />
-            <span class="hero-line">確かな動きへ。</span>
+            <span class="accent">ポリシーを</span><br />
+            <span class="hero-line">確かな動きへ</span>
           </h1>
           <p class="hero-lead">
-            RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、現実世界で機能する<span
-              class="nowrap"
-              >学習ポリシー</span
-            >をロボットに実装します。
+            RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、現実世界で機能するAIをロボットに実装します。
           </p>
-          <div class="hero-meta">
-            <a class="scroll-cue" href="#purpose">
-              <span aria-hidden="true">↓</span>
-              Explore
-            </a>
-            <div class="hero-note" aria-label="From uncertainty to confidence">
-              From uncertainty<br />to confidence
-            </div>
-          </div>
         </div>
 
         <div class="hero-art" aria-hidden="true">
@@ -1239,7 +1178,7 @@ SPDX-License-Identifier: BSD-3-Clause
             <p class="section-label"><span>01</span> Purpose</p>
             <div>
               <h2 class="purpose-statement reveal" id="purpose-title">
-                <em>任せられる</em>知能ロボットを。
+                <em>任せられる</em><span class="nowrap">知能ロボットを</span>
               </h2>
               <div class="purpose-bottom reveal">
                 <p class="purpose-copy">
@@ -1260,7 +1199,7 @@ SPDX-License-Identifier: BSD-3-Clause
               <p class="section-label"><span>—</span> 目指す未来</p>
               <div>
                 <h2 class="reveal" id="north-star-title">
-                  学習し続けるロボットが、<br />人と安全に<span class="mobile-break"><br /></span>協調できる未来。
+                  学習し続けるロボットが<br />人と安全に<span class="mobile-break"><br /></span>協調できる未来
                 </h2>
                 <p class="north-star-copy reveal">
                   限定された条件だけでなく、変化する実環境で学び、適応し、安全に動き続ける。
@@ -1278,7 +1217,7 @@ SPDX-License-Identifier: BSD-3-Clause
             <p class="section-label"><span>02</span> Robotics</p>
             <div class="core-heading">
               <h2 class="section-title reveal" id="core-title">
-                現実を捉え、<br />制御を極める。
+                現実を捉え<br />制御を極める
               </h2>
             </div>
           </div>
@@ -1336,7 +1275,8 @@ SPDX-License-Identifier: BSD-3-Clause
 
           <div class="core-flow" aria-label="ロボットの学習・制御パイプライン">
             Vision + Language <span aria-hidden="true">→</span> Imitation
-            <span aria-hidden="true">→</span> Reinforcement <span aria-hidden="true">→</span> Control
+            <span aria-hidden="true">→</span> Reinforcement <span aria-hidden="true">→</span> Safety
+            <span aria-hidden="true">→</span> Control
           </div>
 
         </div>
@@ -1347,8 +1287,8 @@ SPDX-License-Identifier: BSD-3-Clause
           <div class="closing-message reveal">
             <p class="closing-kicker">Perception · Policy · Control</p>
             <h2 id="closing-title">
-              知覚、言語、<span class="mobile-break"><br /></span>制御まで。<br />
-              <em>安全に動作する<span class="mobile-break"><br /></span>知能ロボットへ。</em>
+              知覚 言語 <span class="mobile-break"><br /></span>制御まで<br />
+              <em>安全に動作する<span class="mobile-break"><br /></span>知能ロボットへ</em>
             </h2>
           </div>
 
