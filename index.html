@@ -598,12 +598,36 @@ SPDX-License-Identifier: BSD-3-Clause
 
       .core-card--imitation {
         color: var(--white);
-        background: var(--night);
+        background: var(--forest);
       }
 
       .core-card--reinforcement {
         color: var(--white);
         background: var(--forest);
+      }
+
+      .core-card--safety {
+        grid-column: 1 / -1;
+        min-height: 300px;
+        color: var(--night);
+        background: var(--paper);
+      }
+
+      .core-card--safety-content {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: clamp(32px, 6vw, 96px);
+        align-items: end;
+        margin-top: auto;
+      }
+
+      .core-card--safety h3 {
+        margin: 0;
+        color: var(--forest);
+      }
+
+      .core-card--safety p {
+        color: var(--ink-soft);
       }
 
       .core-card-meta {
@@ -1033,6 +1057,11 @@ SPDX-License-Identifier: BSD-3-Clause
           min-height: 300px;
         }
 
+        .core-card--safety-content {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
         .core-flow {
           flex-wrap: wrap;
           max-width: 280px;
@@ -1289,6 +1318,19 @@ SPDX-License-Identifier: BSD-3-Clause
               </div>
               <h3><small>Reinforcement learning</small>試行で磨く</h3>
               <p>報酬と環境フィードバックからポリシーを最適化し、未学習条件への適応性能を高めます。</p>
+            </article>
+
+            <article class="core-card core-card--safety reveal">
+              <div class="core-card-meta">
+                <span>05 / Safety</span>
+                <span class="core-tier">Core</span>
+              </div>
+              <div class="core-card--safety-content">
+                <h3><small>Safety by design</small>安全を組み込む</h3>
+                <p>
+                  知能ロボットは動けばいいというものではありません。人と共存する環境でリスクを抑えた行動選択を目指します。
+                </p>
+              </div>
             </article>
           </div>
 
