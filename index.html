@@ -1,0 +1,1408 @@
+<!--
+Copyright (c) 2022-2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+All rights reserved.
+
+SPDX-License-Identifier: BSD-3-Clause
+-->
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f1efe8" />
+    <meta
+      name="description"
+      content="RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、現実世界で機能する学習ポリシーをロボットに実装します。"
+    />
+    <title>RLR 柏の葉 — 現実から学ぶポリシーを、確かな動きへ。</title>
+
+    <style>
+      :root {
+        --paper: #f1efe8;
+        --paper-deep: #e6e2d8;
+        --ink: #151713;
+        --ink-soft: #555a52;
+        --night: #11130f;
+        --night-soft: #1a1d17;
+        --forest: #26382f;
+        --white: #faf9f5;
+        --line: rgba(21, 23, 19, 0.16);
+        --line-light: rgba(250, 249, 245, 0.16);
+        --sans: "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, Arial, sans-serif;
+        --serif: "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", Georgia, serif;
+        --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        --shell: min(100% - 48px, 1320px);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: var(--sans);
+        font-weight: 400;
+        line-height: 1.7;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body::before {
+        position: fixed;
+        z-index: -1;
+        inset: 0;
+        content: "";
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(21, 23, 19, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(21, 23, 19, 0.035) 1px, transparent 1px);
+        background-size: 48px 48px;
+        mask-image: linear-gradient(to bottom, #000 0%, transparent 72%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .nowrap {
+        white-space: nowrap;
+      }
+
+      button {
+        color: inherit;
+        font: inherit;
+      }
+
+      ::selection {
+        color: var(--white);
+        background: var(--forest);
+      }
+
+      .skip-link {
+        position: fixed;
+        z-index: 100;
+        top: 12px;
+        left: 12px;
+        padding: 10px 14px;
+        color: var(--white);
+        background: var(--forest);
+        transform: translateY(-160%);
+        transition: transform 180ms ease;
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .shell {
+        width: var(--shell);
+        margin-inline: auto;
+      }
+
+      .site-header {
+        position: fixed;
+        z-index: 50;
+        top: 0;
+        right: 0;
+        left: 0;
+        border-bottom: 1px solid transparent;
+        transition:
+          background-color 240ms ease,
+          border-color 240ms ease;
+      }
+
+      .site-header.is-scrolled,
+      .site-header:has(.site-nav.is-open) {
+        border-color: var(--line);
+        background: rgba(241, 239, 232, 0.88);
+        backdrop-filter: blur(18px);
+      }
+
+      .nav-shell {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 80px;
+      }
+
+      .brand {
+        position: relative;
+        display: inline-grid;
+        grid-template-columns: auto 7px auto;
+        gap: 2.5px;
+        align-items: center;
+        padding-block: 5px;
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        white-space: nowrap;
+      }
+
+      .brand > span:not(.brand-sigmoid) {
+        position: relative;
+        z-index: 1;
+      }
+
+      .brand-sigmoid {
+        display: block;
+        width: 7px;
+        height: 20px;
+      }
+
+      .brand-sigmoid svg {
+        position: absolute;
+        z-index: 0;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 30px;
+        overflow: visible;
+        transform: translateY(-50%);
+      }
+
+      .site-nav {
+        display: flex;
+        gap: 34px;
+        align-items: center;
+      }
+
+      .site-nav a {
+        position: relative;
+        padding-block: 8px;
+        color: var(--ink-soft);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+      }
+
+      .site-nav a::after {
+        position: absolute;
+        right: 0;
+        bottom: 3px;
+        left: 0;
+        height: 1px;
+        content: "";
+        background: var(--ink);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 220ms ease;
+      }
+
+      .site-nav a:hover,
+      .site-nav a:focus-visible {
+        color: var(--ink);
+      }
+
+      .site-nav a:hover::after,
+      .site-nav a:focus-visible::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+
+      .menu-button {
+        display: none;
+        width: 42px;
+        height: 42px;
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: transparent;
+        cursor: pointer;
+      }
+
+      .menu-button span,
+      .menu-button::before,
+      .menu-button::after {
+        display: block;
+        width: 16px;
+        height: 1px;
+        margin: 4px auto;
+        content: "";
+        background: currentcolor;
+        transition: transform 180ms ease;
+      }
+
+      .menu-button[aria-expanded="true"] span {
+        opacity: 0;
+      }
+
+      .menu-button[aria-expanded="true"]::before {
+        transform: translateY(5px) rotate(45deg);
+      }
+
+      .menu-button[aria-expanded="true"]::after {
+        transform: translateY(-5px) rotate(-45deg);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.12fr) minmax(360px, 0.88fr);
+        gap: clamp(44px, 7vw, 112px);
+        align-items: center;
+        min-height: 100svh;
+        padding-top: 112px;
+        padding-bottom: 64px;
+      }
+
+      .eyebrow {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        margin: 0 0 34px;
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        width: 34px;
+        height: 1px;
+        content: "";
+        background: currentcolor;
+      }
+
+      .hero-title {
+        max-width: 860px;
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(58px, 6vw, 100px);
+        font-weight: 500;
+        letter-spacing: -0.065em;
+        line-height: 1.06;
+      }
+
+      .hero-line {
+        white-space: nowrap;
+      }
+
+      .hero-title .accent {
+        display: inline-block;
+        font-style: normal;
+        white-space: nowrap;
+      }
+
+      .hero-lead {
+        max-width: 600px;
+        margin: 38px 0 0;
+        color: var(--ink-soft);
+        font-size: clamp(16px, 1.2vw, 18px);
+        line-height: 1.9;
+      }
+
+      .hero-meta {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        margin-top: 54px;
+      }
+
+      .scroll-cue {
+        display: inline-flex;
+        gap: 12px;
+        align-items: center;
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .scroll-cue span {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        transition:
+          color 180ms ease,
+          background-color 180ms ease;
+      }
+
+      .scroll-cue:hover span,
+      .scroll-cue:focus-visible span {
+        color: var(--white);
+        background: var(--forest);
+      }
+
+      .hero-note {
+        color: var(--ink-soft);
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        line-height: 1.6;
+        text-transform: uppercase;
+      }
+
+      .hero-art {
+        position: relative;
+        min-height: min(70svh, 720px);
+        overflow: hidden;
+        border-radius: 18px;
+        color: var(--white);
+        background:
+          radial-gradient(circle at 50% 38%, rgba(250, 249, 245, 0.11), transparent 28%),
+          linear-gradient(165deg, #30483b 0%, var(--night) 72%);
+        isolation: isolate;
+      }
+
+      .hero-art::before {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        content: "";
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        background-size: 44px 44px;
+        mask-image: linear-gradient(to bottom, #000, transparent 92%);
+      }
+
+      .hero-art svg {
+        position: absolute;
+        inset: 5% -7% -4%;
+        width: 114%;
+        height: 99%;
+      }
+
+      .hero-art > img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .thread-path {
+        fill: none;
+        stroke: rgba(250, 249, 245, 0.76);
+        stroke-linecap: round;
+        stroke-width: 1.4;
+      }
+
+      .thread-path--soft {
+        stroke: rgba(250, 249, 245, 0.17);
+        stroke-width: 1;
+      }
+
+      .thread-path--accent {
+        stroke: var(--white);
+        stroke-dasharray: 4 12;
+        stroke-width: 2;
+        animation: thread-flow 16s linear infinite;
+      }
+
+      .thread-node {
+        fill: var(--night);
+        stroke: var(--white);
+        stroke-width: 1.4;
+      }
+
+      .thread-glow {
+        fill: var(--white);
+        opacity: 0.14;
+        transform-origin: center;
+        animation: pulse 3.2s ease-in-out infinite;
+      }
+
+      .signal-strip {
+        overflow: hidden;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .signal-track {
+        display: flex;
+        width: max-content;
+        animation: marquee 28s linear infinite;
+      }
+
+      .signal-item {
+        display: inline-flex;
+        gap: 36px;
+        align-items: center;
+        padding: 18px 36px;
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .signal-item::after {
+        width: 7px;
+        height: 7px;
+        content: "";
+        border-radius: 50%;
+        background: var(--forest);
+      }
+
+      .section {
+        scroll-margin-top: 80px;
+        padding-block: clamp(104px, 12vw, 180px);
+      }
+
+      .section-label {
+        margin: 0;
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .section-label span {
+        display: inline-block;
+        min-width: 44px;
+        color: var(--ink-soft);
+      }
+
+      .purpose {
+        color: var(--white);
+        background: var(--night);
+      }
+
+      .purpose .section-label span {
+        color: rgba(250, 249, 245, 0.58);
+      }
+
+      .purpose-copy {
+        color: rgba(250, 249, 245, 0.68);
+      }
+
+      .purpose-grid {
+        display: grid;
+        grid-template-columns: minmax(180px, 0.35fr) minmax(0, 1.65fr);
+        gap: clamp(48px, 8vw, 130px);
+      }
+
+      .purpose-statement {
+        max-width: 960px;
+        margin: 0;
+        color: rgba(250, 249, 245, 0.7);
+        font-family: var(--serif);
+        font-size: clamp(42px, 6vw, 86px);
+        font-weight: 500;
+        letter-spacing: -0.05em;
+        line-height: 1.25;
+      }
+
+      .purpose-statement em {
+        color: var(--white);
+        font-style: normal;
+      }
+
+      .purpose-bottom {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 44px;
+        margin-top: 84px;
+        padding-top: 34px;
+        border-top: 1px solid var(--line-light);
+      }
+
+      .purpose-copy {
+        max-width: 590px;
+        margin: 0;
+        font-size: 16px;
+        line-height: 2;
+      }
+
+      .purpose-quote {
+        justify-self: end;
+        max-width: 350px;
+        margin: 0;
+        color: var(--white);
+        font-family: var(--serif);
+        font-size: 23px;
+        line-height: 1.5;
+      }
+
+      .purpose-quote small {
+        display: block;
+        margin-top: 18px;
+        color: rgba(250, 249, 245, 0.48);
+        font-family: var(--mono);
+        font-size: 9px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .section-title {
+        max-width: 820px;
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(36px, 4.8vw, 70px);
+        font-weight: 500;
+        letter-spacing: -0.055em;
+        line-height: 1.2;
+      }
+
+      .core {
+        padding-bottom: clamp(88px, 9vw, 132px);
+        background: var(--paper-deep);
+      }
+
+      .core-head {
+        display: grid;
+        grid-template-columns: 0.45fr 1.55fr;
+        gap: clamp(48px, 8vw, 130px);
+        align-items: start;
+        margin-bottom: 74px;
+      }
+
+      .core-heading {
+        max-width: 900px;
+      }
+
+      .core-intro {
+        max-width: 650px;
+        margin: 32px 0 0;
+        color: var(--ink-soft);
+        font-size: 16px;
+        line-height: 2;
+      }
+
+      .core-map {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .core-card {
+        display: flex;
+        flex-direction: column;
+        min-height: 360px;
+        padding: clamp(28px, 3.2vw, 46px);
+        background: var(--paper);
+      }
+
+      .core-card--imitation {
+        color: var(--white);
+        background: var(--night);
+      }
+
+      .core-card--reinforcement {
+        color: var(--white);
+        background: var(--forest);
+      }
+
+      .core-card-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: var(--mono);
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .core-tier {
+        padding: 4px 7px;
+        border: 1px solid currentcolor;
+        border-radius: 999px;
+        opacity: 0.68;
+      }
+
+      .core-card h3 {
+        margin: auto 0 18px;
+        font-family: var(--serif);
+        font-size: clamp(31px, 3.4vw, 48px);
+        font-weight: 500;
+        letter-spacing: -0.045em;
+        line-height: 1.25;
+      }
+
+      .core-card h3 small {
+        display: block;
+        margin-bottom: 10px;
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .core-card p {
+        max-width: 510px;
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 14px;
+        line-height: 1.9;
+      }
+
+      .core-card--imitation p {
+        color: rgba(250, 249, 245, 0.62);
+      }
+
+      .core-card--reinforcement p {
+        color: rgba(250, 249, 245, 0.68);
+      }
+
+      .core-flow {
+        display: flex;
+        gap: 18px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 28px;
+        font-family: var(--mono);
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .core-flow span {
+        color: var(--forest);
+        font-size: 16px;
+      }
+
+      .north-star {
+        position: relative;
+        overflow: hidden;
+        margin-top: clamp(72px, 9vw, 128px);
+        padding: clamp(48px, 7vw, 96px);
+        border-radius: 18px;
+        color: var(--white);
+        background: var(--forest);
+      }
+
+      .north-star::before,
+      .north-star::after {
+        position: absolute;
+        border: 1px solid rgba(250, 249, 245, 0.18);
+        border-radius: 50%;
+        content: "";
+      }
+
+      .north-star::before {
+        top: -420px;
+        right: -160px;
+        width: 720px;
+        height: 720px;
+      }
+
+      .north-star::after {
+        right: 12%;
+        bottom: -360px;
+        width: 560px;
+        height: 560px;
+      }
+
+      .north-star-grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 0.42fr 1.58fr;
+        gap: clamp(50px, 9vw, 150px);
+      }
+
+      .north-star .section-label span {
+        color: rgba(250, 249, 245, 0.55);
+      }
+
+      .north-star h2 {
+        max-width: 940px;
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(38px, 4.15vw, 60px);
+        font-weight: 500;
+        letter-spacing: -0.06em;
+        line-height: 1.15;
+      }
+
+      .north-star-copy {
+        max-width: 650px;
+        margin: 42px 0 0 auto;
+        color: rgba(250, 249, 245, 0.78);
+        font-size: 16px;
+        line-height: 2;
+      }
+
+      .mobile-break {
+        display: none;
+      }
+
+      .closing {
+        position: relative;
+        overflow: hidden;
+        padding-block: clamp(130px, 16vw, 230px) 64px;
+        color: var(--white);
+        background: var(--forest);
+      }
+
+      .closing::before {
+        position: absolute;
+        top: 12%;
+        left: 50%;
+        width: 1px;
+        height: 96px;
+        content: "";
+        background: linear-gradient(var(--white), transparent);
+        opacity: 0.5;
+      }
+
+      .closing-message {
+        max-width: 1040px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .closing-kicker {
+        margin: 0 0 28px;
+        color: rgba(250, 249, 245, 0.65);
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .closing h2 {
+        margin: 0;
+        color: rgba(250, 249, 245, 0.68);
+        font-family: var(--serif);
+        font-size: clamp(44px, 6vw, 82px);
+        font-weight: 500;
+        letter-spacing: -0.055em;
+        line-height: 1.25;
+      }
+
+      .closing h2 em {
+        color: var(--white);
+        font-style: normal;
+      }
+
+      .site-footer {
+        display: flex;
+        gap: 24px;
+        align-items: end;
+        justify-content: space-between;
+        margin-top: 150px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line-light);
+      }
+
+      .footer-wordmark {
+        margin: 0;
+        font-size: clamp(42px, 7vw, 90px);
+        font-weight: 700;
+        letter-spacing: -0.055em;
+        line-height: 0.85;
+      }
+
+      .footer-meta {
+        color: rgba(250, 249, 245, 0.48);
+        font-family: var(--mono);
+        font-size: 9px;
+        letter-spacing: 0.12em;
+        line-height: 1.8;
+        text-align: right;
+        text-transform: uppercase;
+      }
+
+      .footer-details {
+        display: flex;
+        gap: 36px;
+        align-items: end;
+      }
+
+      .footer-contact,
+      .footer-address {
+        margin: 0;
+        color: rgba(250, 249, 245, 0.78);
+        font-size: 12px;
+        line-height: 1.8;
+        text-align: right;
+      }
+
+      .footer-contact span,
+      .footer-address span {
+        display: block;
+        color: rgba(250, 249, 245, 0.42);
+        font-family: var(--mono);
+        font-size: 9px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .footer-contact a {
+        border-bottom: 1px solid rgba(250, 249, 245, 0.3);
+        transition: border-color 180ms ease;
+      }
+
+      .footer-contact a:hover,
+      .footer-contact a:focus-visible {
+        border-color: var(--white);
+      }
+
+      .footer-address {
+        font-style: normal;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+
+      .reveal.is-visible {
+        animation: reveal-up 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      @keyframes reveal-up {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes thread-flow {
+        to {
+          stroke-dashoffset: -160;
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.1;
+          transform: scale(0.88);
+        }
+        50% {
+          opacity: 0.32;
+          transform: scale(1.12);
+        }
+      }
+
+      @keyframes marquee {
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      @media (max-width: 980px) {
+        :root {
+          --shell: min(100% - 36px, 760px);
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+          padding-top: 144px;
+        }
+
+        .hero-copy {
+          padding-bottom: 10px;
+        }
+
+        .hero-art {
+          min-height: 620px;
+          border-radius: 18px;
+        }
+
+        .purpose-grid,
+        .core-head,
+        .north-star-grid {
+          grid-template-columns: 1fr;
+        }
+
+
+      }
+
+      @media (max-width: 700px) {
+        :root {
+          --shell: min(100% - 28px, 560px);
+        }
+
+        body::before {
+          background-size: 32px 32px;
+        }
+
+        .nav-shell {
+          min-height: 68px;
+        }
+
+        .menu-button {
+          display: block;
+        }
+
+        .site-nav {
+          position: fixed;
+          top: 68px;
+          right: 0;
+          left: 0;
+          display: grid;
+          gap: 0;
+          padding: 18px 14px 24px;
+          border-bottom: 1px solid var(--line);
+          background: rgba(241, 239, 232, 0.98);
+          opacity: 0;
+          pointer-events: none;
+          transform: translateY(-12px);
+          transition:
+            opacity 180ms ease,
+            transform 180ms ease;
+        }
+
+        .site-nav.is-open {
+          opacity: 1;
+          pointer-events: auto;
+          transform: translateY(0);
+        }
+
+        .site-nav a {
+          padding: 14px 4px;
+          border-bottom: 1px solid var(--line);
+          font-size: 13px;
+        }
+
+        .site-nav a::after {
+          display: none;
+        }
+
+        .hero {
+          min-height: auto;
+          padding-top: 122px;
+          padding-bottom: 42px;
+        }
+
+        .eyebrow {
+          margin-bottom: 26px;
+        }
+
+        .hero-title {
+          font-size: clamp(44px, 13.2vw, 68px);
+          line-height: 1.12;
+        }
+
+        .hero-lead {
+          margin-top: 28px;
+          font-size: 16px;
+        }
+
+        .hero-meta {
+          justify-content: space-between;
+          margin-top: 38px;
+        }
+
+        .hero-note {
+          text-align: right;
+        }
+
+        .hero-art {
+          min-height: 480px;
+          border-radius: 12px;
+        }
+
+        .purpose-bottom {
+          grid-template-columns: 1fr;
+          margin-top: 58px;
+        }
+
+        .purpose-quote {
+          justify-self: start;
+        }
+
+        .core-head {
+          margin-bottom: 48px;
+        }
+
+        .core-map {
+          grid-template-columns: 1fr;
+        }
+
+        .core-card {
+          min-height: 300px;
+        }
+
+        .core-flow {
+          flex-wrap: wrap;
+          max-width: 280px;
+          margin-inline: auto;
+        }
+
+        .north-star-copy {
+          margin-top: 38px;
+        }
+
+        .north-star h2 {
+          font-size: 34px;
+        }
+
+        .mobile-break {
+          display: inline;
+        }
+
+        .closing::before {
+          height: 70px;
+        }
+
+        .site-footer {
+          display: block;
+          margin-top: 110px;
+        }
+
+        .footer-meta {
+          margin-top: 30px;
+          text-align: left;
+        }
+
+        .footer-details {
+          display: block;
+          margin-top: 30px;
+        }
+
+        .footer-contact,
+        .footer-address {
+          text-align: left;
+        }
+
+        .footer-address {
+          margin-top: 18px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+
+        .reveal {
+          opacity: 1;
+          transform: none;
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">本文へ移動</a>
+
+    <header class="site-header" id="site-header">
+      <div class="shell nav-shell">
+        <a class="brand" href="#top" aria-label="RLR 柏の葉 ホーム">
+          <span>RLR</span>
+          <span class="brand-sigmoid" aria-hidden="true">
+            <svg viewBox="0 0 116 30" fill="none" preserveAspectRatio="none">
+              <path
+                d="M1 25H40C44 25 46 5 54 5H115"
+                stroke="#26382f"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                vector-effect="non-scaling-stroke"
+              />
+            </svg>
+          </span>
+          <span>柏の葉</span>
+        </a>
+
+        <button
+          class="menu-button"
+          id="menu-button"
+          type="button"
+          aria-controls="site-nav"
+          aria-expanded="false"
+          aria-label="メニューを開く"
+        >
+          <span aria-hidden="true"></span>
+        </button>
+
+        <nav class="site-nav" id="site-nav" aria-label="メインナビゲーション">
+          <a href="#purpose">Purpose</a>
+          <a href="#core">Robotics</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="shell hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Learning in the real world</p>
+          <h1 class="hero-title" id="hero-title">
+            現実から学ぶ<br />
+            <span class="accent">ポリシーを、</span><br />
+            <span class="hero-line">確かな動きへ。</span>
+          </h1>
+          <p class="hero-lead">
+            RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、現実世界で機能する<span
+              class="nowrap"
+              >学習ポリシー</span
+            >をロボットに実装します。
+          </p>
+          <div class="hero-meta">
+            <a class="scroll-cue" href="#purpose">
+              <span aria-hidden="true">↓</span>
+              Explore
+            </a>
+            <div class="hero-note" aria-label="From uncertainty to confidence">
+              From uncertainty<br />to confidence
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <!-- Placeholder: replace this SVG with an actual simulation image. -->
+          <svg viewBox="0 0 560 720" preserveAspectRatio="xMidYMid meet">
+            <path
+              class="thread-path thread-path--soft"
+              d="M36 -30C198 86 20 242 174 342C314 432 140 591 288 764"
+            />
+            <path
+              class="thread-path thread-path--soft"
+              d="M171 -35C348 92 116 199 274 326C442 462 230 598 424 764"
+            />
+            <path
+              class="thread-path"
+              d="M291 -30C442 101 227 241 358 352C499 472 332 593 528 750"
+            />
+            <path
+              class="thread-path thread-path--accent"
+              d="M96 -32C250 98 73 209 224 337C392 479 185 596 379 756"
+            />
+            <circle class="thread-glow" cx="224" cy="337" r="34" />
+            <circle class="thread-node" cx="224" cy="337" r="6" />
+            <circle class="thread-node" cx="358" cy="352" r="4" />
+            <circle class="thread-node" cx="378" cy="756" r="5" />
+          </svg>
+        </div>
+      </section>
+
+      <div class="signal-strip" aria-hidden="true">
+        <div class="signal-track">
+          <span class="signal-item">Vision</span>
+          <span class="signal-item">Language</span>
+          <span class="signal-item">Imitation learning</span>
+          <span class="signal-item">Reinforcement learning</span>
+          <span class="signal-item">Safety</span>
+          <span class="signal-item">Vision</span>
+          <span class="signal-item">Language</span>
+          <span class="signal-item">Imitation learning</span>
+          <span class="signal-item">Reinforcement learning</span>
+          <span class="signal-item">Safety</span>
+        </div>
+      </div>
+
+      <section class="section purpose" id="purpose" aria-labelledby="purpose-title">
+        <div class="shell">
+          <div class="purpose-grid">
+            <p class="section-label"><span>01</span> Purpose</p>
+            <div>
+              <h2 class="purpose-statement reveal" id="purpose-title">
+                現実世界で、<br /><em>任せられる</em><br />知能ロボットを。
+              </h2>
+              <div class="purpose-bottom reveal">
+                <p class="purpose-copy">
+                  実環境で機能するロボットには、知覚・推論・制御を一貫して扱う<span class="nowrap">学習ポリシー</span>が必要です。
+                  視覚観測と言語指示から状態とタスクを表現し、模倣学習で<span class="nowrap">初期ポリシー</span>を獲得します。
+                  さらに、強化学習で環境変化への適応性能を最適化し、実環境で安定して動作する制御としてロボットに実装します。
+                </p>
+                <blockquote class="purpose-quote">
+                  Learning matters when it works in the real world.
+                  <small>Our reason to exist</small>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+
+          <div class="north-star" aria-labelledby="north-star-title">
+            <div class="north-star-grid">
+              <p class="section-label"><span>—</span> 目指す未来</p>
+              <div>
+                <h2 class="reveal" id="north-star-title">
+                  学習し続けるロボットが、<br />人と安全に<span class="mobile-break"><br /></span>協調できる未来。
+                </h2>
+                <p class="north-star-copy reveal">
+                  限定された条件だけでなく、変化する実環境で学び、適応し、安全に動き続ける。
+                  そんなロボットが、より多くのタスクを担う未来を目指します。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section core" id="core" aria-labelledby="core-title">
+        <div class="shell">
+          <div class="core-head">
+            <p class="section-label"><span>02</span> Robotics</p>
+            <div class="core-heading">
+              <h2 class="section-title reveal" id="core-title">
+                現実を捉え、<br />制御を学ぶ。
+              </h2>
+              <p class="core-intro reveal">
+                ビジョンと言語を入力に、模倣学習で<span class="nowrap">初期ポリシー</span>を獲得し、強化学習で適応性能を最適化する。
+                知覚から制御までを、一つの学習系として統合します。
+              </p>
+            </div>
+          </div>
+
+          <div class="core-map">
+            <article class="core-card reveal">
+              <div class="core-card-meta">
+                <span>01 / Vision</span>
+                <span class="core-tier">Foundation</span>
+              </div>
+              <h3><small>Machine vision</small>世界を捉える</h3>
+              <p>画像観測から物体、姿勢、運動、関係性を推定し、制御に必要な状態表現へ変換します。</p>
+            </article>
+
+            <article class="core-card reveal">
+              <div class="core-card-meta">
+                <span>02 / Language</span>
+                <span class="core-tier">Foundation</span>
+              </div>
+              <h3><small>Language grounding</small>意味をつなぐ</h3>
+              <p>言語指示とタスク文脈を状態表現へ接地し、知覚と行動に共通する条件を構築します。</p>
+            </article>
+
+            <article class="core-card core-card--imitation reveal">
+              <div class="core-card-meta">
+                <span>03 / Imitation</span>
+                <span class="core-tier">Core</span>
+              </div>
+              <h3><small>Imitation learning</small>教示から学ぶ</h3>
+              <p>教示データに含まれる動作と判断から、制御の<span class="nowrap">初期ポリシー</span>を獲得します。</p>
+            </article>
+
+            <article class="core-card core-card--reinforcement reveal">
+              <div class="core-card-meta">
+                <span>04 / Reinforcement</span>
+                <span class="core-tier">Core</span>
+              </div>
+              <h3><small>Reinforcement learning</small>試行で磨く</h3>
+              <p>報酬と環境フィードバックからポリシーを最適化し、未学習条件への適応性能を高めます。</p>
+            </article>
+          </div>
+
+          <div class="core-flow" aria-label="ロボットの学習・制御パイプライン">
+            Vision + Language <span aria-hidden="true">→</span> Imitation
+            <span aria-hidden="true">→</span> Reinforcement <span aria-hidden="true">→</span> Control
+          </div>
+
+        </div>
+      </section>
+
+      <section class="closing" aria-labelledby="closing-title">
+        <div class="shell">
+          <div class="closing-message reveal">
+            <p class="closing-kicker">Perception · Policy · Control</p>
+            <h2 id="closing-title">
+              知覚から判断、<span class="mobile-break"><br /></span>制御まで。<br />
+              <em>現実で機能する<span class="mobile-break"><br /></span>ロボットへ。</em>
+            </h2>
+          </div>
+
+          <footer class="site-footer">
+            <p class="footer-wordmark">RLR 柏の葉</p>
+            <div class="footer-details">
+              <p class="footer-contact">
+                <span>Email</span>
+                <a href="mailto:rlr.kashiwanoha@gmail.com" aria-label="RLR 柏の葉へメール">
+                  rlr.kashiwanoha@gmail.com
+                </a>
+              </p>
+              <address class="footer-address">
+                <span>Location</span>
+                千葉県柏市加賀3-10-14
+              </address>
+              <div class="footer-meta">
+                Purpose / Robotics<br />
+                © 2025 RLR 柏の葉
+              </div>
+            </div>
+          </footer>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      (() => {
+        const header = document.querySelector("#site-header");
+        const menuButton = document.querySelector("#menu-button");
+        const nav = document.querySelector("#site-nav");
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        if (window.location.hash) {
+          const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+          if (target) {
+            const root = document.documentElement;
+            const previousScrollBehavior = root.style.scrollBehavior;
+            root.style.scrollBehavior = "auto";
+            requestAnimationFrame(() => {
+              target.scrollIntoView({ block: "start" });
+              root.style.scrollBehavior = previousScrollBehavior;
+            });
+          }
+        }
+
+        const updateHeader = () => header.classList.toggle("is-scrolled", window.scrollY > 20);
+        updateHeader();
+        window.addEventListener("scroll", updateHeader, { passive: true });
+
+        menuButton.addEventListener("click", () => {
+          const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+          menuButton.setAttribute("aria-expanded", String(!isOpen));
+          menuButton.setAttribute("aria-label", isOpen ? "メニューを開く" : "メニューを閉じる");
+          nav.classList.toggle("is-open", !isOpen);
+        });
+
+        nav.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => {
+            menuButton.setAttribute("aria-expanded", "false");
+            menuButton.setAttribute("aria-label", "メニューを開く");
+            nav.classList.remove("is-open");
+          });
+        });
+
+        const revealItems = document.querySelectorAll(".reveal");
+        if (reduceMotion || !("IntersectionObserver" in window)) {
+          revealItems.forEach((item) => item.classList.add("is-visible"));
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.14 }
+        );
+        revealItems.forEach((item) => observer.observe(item));
+      })();
+    </script>
+  </body>
+</html>
