@@ -12,7 +12,7 @@ SPDX-License-Identifier: BSD-3-Clause
     <meta name="theme-color" content="#f1efe8" />
     <meta
       name="description"
-      content="RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、現実世界で機能するAIをロボットに実装します。"
+      content="RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、現実世界で機能するAIロボットを実現します。"
     />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://rlrk-dev.github.io/" />
@@ -361,6 +361,32 @@ SPDX-License-Identifier: BSD-3-Clause
         fill: var(--night);
         stroke: var(--white);
         stroke-width: 1.4;
+      }
+
+      .thread-label {
+        fill: rgba(250, 249, 245, 0.48);
+        font-family: var(--mono);
+        font-size: 7px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-anchor: middle;
+      }
+
+      .thread-label--primary {
+        fill: rgba(250, 249, 245, 0.82);
+      }
+
+      .thread-leader {
+        fill: none;
+        stroke: rgba(250, 249, 245, 0.42);
+        stroke-linecap: round;
+        stroke-width: 0.8;
+      }
+
+      .thread-leader-node {
+        fill: var(--forest);
+        stroke: rgba(250, 249, 245, 0.72);
+        stroke-width: 0.8;
       }
 
       .thread-glow {
@@ -1130,7 +1156,7 @@ SPDX-License-Identifier: BSD-3-Clause
             <span class="hero-line">確かな動きへ</span>
           </h1>
           <p class="hero-lead">
-            RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、現実世界で機能するAIをロボットに実装します。
+            RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、現実世界で機能するAIロボットを実現します。
           </p>
         </div>
 
@@ -1138,21 +1164,45 @@ SPDX-License-Identifier: BSD-3-Clause
           <!-- Placeholder: replace this SVG with an actual simulation image. -->
           <svg viewBox="0 0 560 720" preserveAspectRatio="xMidYMid meet">
             <path
+              id="thread-safety-left"
               class="thread-path thread-path--soft"
               d="M36 -30C198 86 20 242 174 342C314 432 140 591 288 764"
             />
             <path
+              id="thread-imitation"
               class="thread-path"
               d="M171 -35C348 92 116 199 274 326C442 462 230 598 424 764"
             />
             <path
+              id="thread-safety-right"
               class="thread-path thread-path--soft"
               d="M291 -30C442 101 227 241 358 352C499 472 332 593 528 750"
             />
             <path
+              id="thread-reinforce"
               class="thread-path thread-path--accent"
               d="M96 -32C250 98 73 209 224 337C392 479 185 596 379 756"
             />
+            <g>
+              <text class="thread-label" x="55" y="24">SAFETY</text>
+              <path class="thread-leader" d="M55 31L112 72" />
+              <circle class="thread-leader-node" cx="112" cy="72" r="2.2" />
+            </g>
+            <g>
+              <text class="thread-label thread-label--primary" x="154" y="24">REINFORCE</text>
+              <path class="thread-leader" d="M154 31L162 72" />
+              <circle class="thread-leader-node" cx="162" cy="72" r="2.2" />
+            </g>
+            <g>
+              <text class="thread-label thread-label--primary" x="260" y="24">IMITATION</text>
+              <path class="thread-leader" d="M260 31L241 72" />
+              <circle class="thread-leader-node" cx="241" cy="72" r="2.2" />
+            </g>
+            <g>
+              <text class="thread-label" x="395" y="24">SAFETY</text>
+              <path class="thread-leader" d="M395 31L344 72" />
+              <circle class="thread-leader-node" cx="344" cy="72" r="2.2" />
+            </g>
             <circle class="thread-glow" cx="224" cy="337" r="34" />
             <circle class="thread-node" cx="224" cy="337" r="6" />
             <circle class="thread-node" cx="378" cy="756" r="5" />
