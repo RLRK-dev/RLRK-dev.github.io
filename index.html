@@ -12,7 +12,7 @@ SPDX-License-Identifier: BSD-3-Clause
     <meta name="theme-color" content="#f1efe8" />
     <meta
       name="description"
-      content="RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、現実世界で機能するAIロボットを実現します。"
+      content="RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、ワールドモデルを活用して、現実世界で機能するAIロボットを実現します。"
     />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://rlrk-dev.github.io/" />
@@ -582,6 +582,13 @@ SPDX-License-Identifier: BSD-3-Clause
         background: var(--forest);
       }
 
+      .core-card--world-model {
+        grid-column: 1 / -1;
+        min-height: 300px;
+        color: var(--white);
+        background: var(--forest);
+      }
+
       .core-card--safety {
         grid-column: 1 / -1;
         min-height: 300px;
@@ -589,6 +596,7 @@ SPDX-License-Identifier: BSD-3-Clause
         background: var(--paper);
       }
 
+      .core-card--world-model-content,
       .core-card--safety-content {
         display: grid;
         grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -597,8 +605,12 @@ SPDX-License-Identifier: BSD-3-Clause
         margin-top: auto;
       }
 
+      .core-card--world-model h3,
       .core-card--safety h3 {
         margin: 0;
+      }
+
+      .core-card--safety h3 {
         color: var(--forest);
       }
 
@@ -659,6 +671,10 @@ SPDX-License-Identifier: BSD-3-Clause
         color: rgba(250, 249, 245, 0.68);
       }
 
+      .core-card--world-model p {
+        color: rgba(250, 249, 245, 0.68);
+      }
+
       .core-flow {
         display: flex;
         gap: 18px;
@@ -673,7 +689,14 @@ SPDX-License-Identifier: BSD-3-Clause
         text-transform: uppercase;
       }
 
-      .core-flow span {
+      .core-flow-item {
+        display: inline-flex;
+        gap: 18px;
+        align-items: center;
+        white-space: nowrap;
+      }
+
+      .core-flow-arrow {
         color: var(--forest);
         font-size: 16px;
       }
@@ -1028,6 +1051,7 @@ SPDX-License-Identifier: BSD-3-Clause
           min-height: 300px;
         }
 
+        .core-card--world-model-content,
         .core-card--safety-content {
           grid-template-columns: 1fr;
           gap: 20px;
@@ -1156,7 +1180,7 @@ SPDX-License-Identifier: BSD-3-Clause
             <span class="hero-line">確かな動きへ</span>
           </h1>
           <p class="hero-lead">
-            RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、現実世界で機能するAIロボットを実現します。
+            RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、ワールドモデルを活用して、現実世界で機能するAIロボットを実現します。
           </p>
         </div>
 
@@ -1216,11 +1240,13 @@ SPDX-License-Identifier: BSD-3-Clause
           <span class="signal-item">Language</span>
           <span class="signal-item">Imitation learning</span>
           <span class="signal-item">Reinforcement learning</span>
+          <span class="signal-item">World model</span>
           <span class="signal-item">Safety</span>
           <span class="signal-item">Vision</span>
           <span class="signal-item">Language</span>
           <span class="signal-item">Imitation learning</span>
           <span class="signal-item">Reinforcement learning</span>
+          <span class="signal-item">World model</span>
           <span class="signal-item">Safety</span>
         </div>
       </div>
@@ -1237,7 +1263,7 @@ SPDX-License-Identifier: BSD-3-Clause
                 <p class="purpose-copy">
                   AIロボットには、人が安心して役割を託せることが求められます。そのためには、変化する実環境を捉え、状況に応じて判断し、リスクを抑えながら安定して動作する力が必要です。
                   わたしたちは、視覚観測と言語指示から状態とタスクを表現します。人の教示をもとに模倣学習を行い、行動の基盤となる<span class="nowrap">ポリシー</span>を構築します。
-                  さらに、そのポリシーを強化学習で最適化し、環境変化に適応する制御方策としてロボットに実装することで、人が安心して役割を託せるAIロボットを実現します。
+                  さらに、そのポリシーを強化学習で最適化するとともに、ワールドモデルで状態遷移を予測します。環境変化に適応する制御方策としてロボットに実装することで、人が安心して役割を託せるAIロボットを実現します。
                 </p>
                 <blockquote class="purpose-quote">
                   Learning matters when it works safely in the real world.
@@ -1312,9 +1338,20 @@ SPDX-License-Identifier: BSD-3-Clause
               <p>報酬と環境フィードバックからポリシーを最適化し、未学習条件への適応性能を高めます。</p>
             </article>
 
+            <article class="core-card core-card--world-model reveal">
+              <div class="core-card-meta">
+                <span>05 / World Model</span>
+                <span class="core-tier">Core</span>
+              </div>
+              <div class="core-card--world-model-content">
+                <h3><small>World model</small>先を予測する</h3>
+                <p>観測と行動から状態遷移を学び、将来の状態を予測して、行動選択と制御に活用します。</p>
+              </div>
+            </article>
+
             <article class="core-card core-card--safety reveal">
               <div class="core-card-meta">
-                <span>05 / Safety</span>
+                <span>06 / Safety</span>
                 <span class="core-tier">Core</span>
               </div>
               <div class="core-card--safety-content">
@@ -1327,9 +1364,12 @@ SPDX-License-Identifier: BSD-3-Clause
           </div>
 
           <div class="core-flow" aria-label="ロボットの学習・制御パイプライン">
-            Vision + Language <span aria-hidden="true">→</span> Imitation
-            <span aria-hidden="true">→</span> Reinforcement <span aria-hidden="true">→</span> Safety
-            <span aria-hidden="true">→</span> Control
+            <span class="core-flow-item">Vision + Language</span>
+            <span class="core-flow-item"><span class="core-flow-arrow" aria-hidden="true">→</span> Imitation</span>
+            <span class="core-flow-item"><span class="core-flow-arrow" aria-hidden="true">→</span> Reinforcement</span>
+            <span class="core-flow-item"><span class="core-flow-arrow" aria-hidden="true">→</span> World Model</span>
+            <span class="core-flow-item"><span class="core-flow-arrow" aria-hidden="true">→</span> Safety</span>
+            <span class="core-flow-item"><span class="core-flow-arrow" aria-hidden="true">→</span> Control</span>
           </div>
 
         </div>
