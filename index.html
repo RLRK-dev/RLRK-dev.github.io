@@ -251,7 +251,8 @@ SPDX-License-Identifier: BSD-3-Clause
       .hero {
         display: grid;
         grid-template-columns: minmax(0, 1.12fr) minmax(360px, 0.88fr);
-        gap: clamp(44px, 7vw, 112px);
+        column-gap: clamp(44px, 7vw, 112px);
+        row-gap: 24px;
         align-items: center;
         min-height: 100svh;
         padding-top: 112px;
@@ -330,6 +331,26 @@ SPDX-License-Identifier: BSD-3-Clause
         height: 99%;
       }
 
+      .hero-art--world-model {
+        min-height: 0;
+        aspect-ratio: 760 / 300;
+      }
+
+      .purpose-model {
+        width: min(100%, 760px);
+        margin: clamp(72px, 9vw, 128px) auto 0;
+      }
+
+      .hero-art--world-model svg {
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .hero-art--world-model .hero-model-mobile {
+        display: none;
+      }
+
       .hero-art > img {
         position: absolute;
         inset: 0;
@@ -374,6 +395,10 @@ SPDX-License-Identifier: BSD-3-Clause
 
       .thread-label--primary {
         fill: rgba(250, 249, 245, 0.82);
+      }
+
+      .hero-art--world-model .thread-label {
+        font-size: 10px;
       }
 
       .thread-leader {
@@ -596,7 +621,14 @@ SPDX-License-Identifier: BSD-3-Clause
         background: var(--paper);
       }
 
-      .core-card--world-model-content,
+      .core-card--world-model-content {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: clamp(32px, 6vw, 96px);
+        align-items: end;
+        margin-top: auto;
+      }
+
       .core-card--safety-content {
         display: grid;
         grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -672,6 +704,7 @@ SPDX-License-Identifier: BSD-3-Clause
       }
 
       .core-card--world-model p {
+        max-width: 510px;
         color: rgba(250, 249, 245, 0.68);
       }
 
@@ -699,68 +732,6 @@ SPDX-License-Identifier: BSD-3-Clause
       .core-flow-arrow {
         color: var(--forest);
         font-size: 16px;
-      }
-
-      .north-star {
-        position: relative;
-        overflow: hidden;
-        margin-top: clamp(72px, 9vw, 128px);
-        padding: clamp(48px, 7vw, 96px);
-        border-radius: 18px;
-        color: var(--white);
-        background: var(--forest);
-      }
-
-      .north-star::before,
-      .north-star::after {
-        position: absolute;
-        border: 1px solid rgba(250, 249, 245, 0.18);
-        border-radius: 50%;
-        content: "";
-      }
-
-      .north-star::before {
-        top: -420px;
-        right: -160px;
-        width: 720px;
-        height: 720px;
-      }
-
-      .north-star::after {
-        right: 12%;
-        bottom: -360px;
-        width: 560px;
-        height: 560px;
-      }
-
-      .north-star-grid {
-        position: relative;
-        z-index: 1;
-        display: grid;
-        grid-template-columns: 0.42fr 1.58fr;
-        gap: clamp(50px, 9vw, 150px);
-      }
-
-      .north-star .section-label span {
-        color: rgba(250, 249, 245, 0.55);
-      }
-
-      .north-star h2 {
-        max-width: 940px;
-        margin: 0;
-        font-family: var(--serif);
-        font-size: clamp(38px, 4.15vw, 60px);
-        font-weight: 500;
-        letter-spacing: -0.06em;
-        line-height: 1.15;
-      }
-
-      .north-star-copy {
-        max-width: 650px;
-        margin: 42px 0 0 auto;
-        color: rgba(250, 249, 245, 0.78);
-        font-size: 16px;
-        line-height: 2;
       }
 
       .mobile-break {
@@ -941,9 +912,13 @@ SPDX-License-Identifier: BSD-3-Clause
           border-radius: 18px;
         }
 
+        .hero-art--world-model {
+          grid-column: auto;
+          min-height: 0;
+        }
+
         .purpose-grid,
-        .core-head,
-        .north-star-grid {
+        .core-head {
           grid-template-columns: 1fr;
         }
 
@@ -1026,6 +1001,23 @@ SPDX-License-Identifier: BSD-3-Clause
           border-radius: 12px;
         }
 
+        .hero-art--world-model {
+          min-height: 0;
+          aspect-ratio: 340 / 210;
+        }
+
+        .hero-art--world-model .hero-model-desktop {
+          display: none;
+        }
+
+        .hero-art--world-model .hero-model-mobile {
+          display: block;
+        }
+
+        .hero-art--world-model .thread-label {
+          font-size: 8px;
+        }
+
         .purpose-bottom {
           grid-template-columns: 1fr;
           margin-top: 58px;
@@ -1051,28 +1043,29 @@ SPDX-License-Identifier: BSD-3-Clause
           min-height: 300px;
         }
 
-        .core-card--world-model-content,
+        .core-card--world-model {
+          min-height: 0;
+        }
+
+        .core-card--world-model-content {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          margin-top: 54px;
+        }
+
         .core-card--safety-content {
           grid-template-columns: 1fr;
           gap: 20px;
+        }
+
+        .core-card--world-model p {
+          max-width: none;
         }
 
         .core-flow {
           flex-wrap: wrap;
           max-width: 280px;
           margin-inline: auto;
-        }
-
-        .north-star-copy {
-          margin-top: 38px;
-        }
-
-        .north-star {
-          padding-inline: 20px;
-        }
-
-        .north-star h2 {
-          font-size: 28px;
         }
 
         .mobile-break {
@@ -1100,12 +1093,6 @@ SPDX-License-Identifier: BSD-3-Clause
 
         .footer-contact {
           text-align: left;
-        }
-      }
-
-      @media (max-width: 360px) {
-        .north-star h2 {
-          font-size: 24px;
         }
       }
 
@@ -1232,6 +1219,7 @@ SPDX-License-Identifier: BSD-3-Clause
             <circle class="thread-node" cx="378" cy="756" r="5" />
           </svg>
         </div>
+
       </section>
 
       <div class="signal-strip" aria-hidden="true">
@@ -1273,19 +1261,66 @@ SPDX-License-Identifier: BSD-3-Clause
             </div>
           </div>
 
-          <div class="north-star" aria-labelledby="north-star-title">
-            <div class="north-star-grid">
-              <p class="section-label"><span>—</span> 目指す未来</p>
-              <div>
-                <h2 class="reveal" id="north-star-title">
-                  <span class="nowrap">学習し続けるロボットが</span><br />人と安全に<span class="mobile-break"><br /></span>融合できる未来
-                </h2>
-                <p class="north-star-copy reveal">
-                  限定された条件だけでなく、変化する実環境で学び、適応し、安全に動き続ける。
-                  そんなロボットが、より多くのタスクを担う未来を目指します。
-                </p>
-              </div>
-            </div>
+          <div class="hero-art hero-art--world-model purpose-model reveal" aria-hidden="true">
+            <svg class="hero-model-desktop" viewBox="0 0 760 300" preserveAspectRatio="xMidYMid meet">
+              <path class="thread-path thread-path--soft" d="M-12 242C92 225 136 177 218 160C312 141 348 65 448 56C558 46 624 94 776 54" />
+              <path class="thread-path thread-path--soft" d="M-8 260C104 228 140 185 218 160C318 128 358 104 448 112C554 122 630 80 774 106" />
+              <path class="thread-path thread-path--soft" d="M-10 276C98 228 143 194 218 160C316 115 376 169 448 166C548 162 628 139 774 178" />
+              <path class="thread-path thread-path--soft" d="M-4 288C98 244 147 205 218 160C300 109 371 214 448 222C548 232 636 194 778 250" />
+              <path class="thread-path thread-path--accent" d="M-12 254C91 230 144 185 218 160C308 130 363 139 448 145C552 153 626 128 776 144" />
+
+              <circle class="thread-glow" cx="218" cy="160" r="38" />
+              <circle class="thread-node" cx="218" cy="160" r="6.5" />
+              <circle class="thread-leader-node" cx="448" cy="56" r="4" />
+              <circle class="thread-leader-node" cx="448" cy="112" r="4" />
+              <circle class="thread-node" cx="448" cy="145" r="4.5" />
+              <circle class="thread-leader-node" cx="448" cy="166" r="4" />
+              <circle class="thread-leader-node" cx="448" cy="222" r="4" />
+              <circle class="thread-node" cx="690" cy="137" r="4.5" />
+
+              <g>
+                <text class="thread-label" x="64" y="64">OBSERVE</text>
+                <path class="thread-leader" d="M64 74L128 108L166 139" />
+                <circle class="thread-leader-node" cx="166" cy="139" r="2.5" />
+              </g>
+              <g>
+                <text class="thread-label" x="404" y="30">IMAGINE</text>
+                <path class="thread-leader" d="M414 39L448 56" />
+              </g>
+              <g>
+                <text class="thread-label thread-label--primary" x="690" y="104">ACT</text>
+                <path class="thread-leader" d="M690 113V132" />
+              </g>
+            </svg>
+
+            <svg class="hero-model-mobile" viewBox="0 0 340 210" preserveAspectRatio="xMidYMid meet">
+              <path class="thread-path thread-path--soft" d="M-8 180C42 168 70 135 111 118C152 101 173 49 220 42C264 35 290 61 348 43" />
+              <path class="thread-path thread-path--soft" d="M-6 190C48 171 73 141 111 118C153 93 177 80 220 85C267 90 296 68 348 82" />
+              <path class="thread-path thread-path--soft" d="M-4 199C47 177 75 149 111 118C149 85 180 126 220 132C263 138 298 116 348 145" />
+              <path class="thread-path thread-path--accent" d="M-8 185C43 171 71 139 111 118C151 97 180 103 220 105C267 108 297 97 348 105" />
+
+              <circle class="thread-glow" cx="111" cy="118" r="28" />
+              <circle class="thread-node" cx="111" cy="118" r="5" />
+              <circle class="thread-leader-node" cx="220" cy="42" r="3" />
+              <circle class="thread-leader-node" cx="220" cy="85" r="3" />
+              <circle class="thread-node" cx="220" cy="105" r="3.5" />
+              <circle class="thread-leader-node" cx="220" cy="132" r="3" />
+              <circle class="thread-node" cx="305" cy="100" r="3.5" />
+
+              <g>
+                <text class="thread-label" x="42" y="48">OBSERVE</text>
+                <path class="thread-leader" d="M45 56L70 76L87 96" />
+                <circle class="thread-leader-node" cx="87" cy="96" r="2" />
+              </g>
+              <g>
+                <text class="thread-label" x="205" y="20">IMAGINE</text>
+                <path class="thread-leader" d="M211 27L220 42" />
+              </g>
+              <g>
+                <text class="thread-label thread-label--primary" x="304" y="74">ACT</text>
+                <path class="thread-leader" d="M304 81V96" />
+              </g>
+            </svg>
           </div>
         </div>
       </section>
