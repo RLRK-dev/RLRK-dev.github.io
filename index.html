@@ -311,7 +311,8 @@ SPDX-License-Identifier: BSD-3-Clause
 
       .hero-art {
         position: relative;
-        min-height: min(70svh, 720px);
+        min-height: 0;
+        aspect-ratio: 1;
         overflow: hidden;
         border-radius: 18px;
         color: var(--white);
@@ -396,7 +397,7 @@ SPDX-License-Identifier: BSD-3-Clause
       .thread-label {
         fill: rgba(250, 249, 245, 0.48);
         font-family: var(--mono);
-        font-size: 7px;
+        font-size: 10.5px;
         font-weight: 600;
         letter-spacing: 0.16em;
         text-anchor: middle;
@@ -910,7 +911,7 @@ SPDX-License-Identifier: BSD-3-Clause
         }
 
         .hero-art {
-          min-height: 620px;
+          min-height: 0;
           border-radius: 18px;
         }
 
@@ -999,7 +1000,7 @@ SPDX-License-Identifier: BSD-3-Clause
         }
 
         .hero-art {
-          min-height: 480px;
+          min-height: 0;
           border-radius: 12px;
         }
 
@@ -1282,7 +1283,11 @@ SPDX-License-Identifier: BSD-3-Clause
               <circle class="thread-node" cx="448" cy="145" r="4.5" />
               <circle class="thread-leader-node" cx="448" cy="166" r="4" />
               <circle class="thread-leader-node" cx="448" cy="222" r="4" />
+              <circle class="thread-leader-node" cx="654" cy="137" r="4" />
+              <circle class="thread-leader-node" cx="672" cy="137" r="4" />
               <circle class="thread-node" cx="690" cy="137" r="4.5" />
+              <circle class="thread-leader-node" cx="708" cy="137" r="4" />
+              <circle class="thread-leader-node" cx="726" cy="137" r="4" />
 
               <g>
                 <text class="thread-label" x="64" y="64">OBSERVE</text>
@@ -1294,7 +1299,7 @@ SPDX-License-Identifier: BSD-3-Clause
                 <path class="thread-leader" d="M414 39L448 56" />
               </g>
               <g>
-                <text class="thread-label thread-label--primary" x="690" y="104">ACT</text>
+                <text class="thread-label thread-label--primary" x="690" y="104">SKILL</text>
                 <path class="thread-leader" d="M690 113V132" />
               </g>
             </svg>
@@ -1311,7 +1316,11 @@ SPDX-License-Identifier: BSD-3-Clause
               <circle class="thread-leader-node" cx="220" cy="85" r="3" />
               <circle class="thread-node" cx="220" cy="105" r="3.5" />
               <circle class="thread-leader-node" cx="220" cy="132" r="3" />
+              <circle class="thread-leader-node" cx="277" cy="100" r="3" />
+              <circle class="thread-leader-node" cx="291" cy="100" r="3" />
               <circle class="thread-node" cx="305" cy="100" r="3.5" />
+              <circle class="thread-leader-node" cx="319" cy="100" r="3" />
+              <circle class="thread-leader-node" cx="333" cy="100" r="3" />
 
               <g>
                 <text class="thread-label" x="42" y="48">OBSERVE</text>
@@ -1323,7 +1332,7 @@ SPDX-License-Identifier: BSD-3-Clause
                 <path class="thread-leader" d="M211 27L220 42" />
               </g>
               <g>
-                <text class="thread-label thread-label--primary" x="304" y="74">ACT</text>
+                <text class="thread-label thread-label--primary" x="304" y="74">SKILL</text>
                 <path class="thread-leader" d="M304 81V96" />
               </g>
             </svg>
