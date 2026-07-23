@@ -5,22 +5,22 @@ All rights reserved.
 SPDX-License-Identifier: BSD-3-Clause
 -->
 <!doctype html>
-<html lang="ja">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f1efe8" />
     <meta
       name="description"
-      content="RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、WMSOを基盤として、現実世界で機能するAIロボットを実現します。"
+      content="RLR Kashiwanoha connects vision and language through reinforcement and imitation learning, using WMSO to build AI robots that work safely in the real world."
     />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <link rel="canonical" href="https://rlrk-dev.github.io/" />
+    <link rel="canonical" href="https://rlrk-dev.github.io/en/" />
     <link rel="alternate" hreflang="ja" href="https://rlrk-dev.github.io/" />
     <link rel="alternate" hreflang="en" href="https://rlrk-dev.github.io/en/" />
     <link rel="alternate" hreflang="x-default" href="https://rlrk-dev.github.io/" />
     <link rel="sitemap" type="application/xml" href="https://rlrk-dev.github.io/sitemap.xml" />
-    <title>RLR 柏の葉 — 不確実さを確かな動きへ</title>
+    <title>RLR Kashiwanoha — From Uncertainty to Reliable Motion</title>
 
     <style>
       :root {
@@ -285,9 +285,9 @@ SPDX-License-Identifier: BSD-3-Clause
         max-width: 860px;
         margin: 0;
         font-family: var(--serif);
-        font-size: clamp(58px, 6vw, 100px);
+        font-size: clamp(52px, 5.25vw, 86px);
         font-weight: 500;
-        letter-spacing: -0.065em;
+        letter-spacing: -0.055em;
         line-height: 1.06;
       }
 
@@ -993,7 +993,7 @@ SPDX-License-Identifier: BSD-3-Clause
         }
 
         .hero-title {
-          font-size: clamp(44px, 13.2vw, 68px);
+          font-size: clamp(40px, 10.8vw, 54px);
           line-height: 1.12;
         }
 
@@ -1126,11 +1126,11 @@ SPDX-License-Identifier: BSD-3-Clause
   </head>
 
   <body>
-    <a class="skip-link" href="#main">本文へ移動</a>
+    <a class="skip-link" href="#main">Skip to main content</a>
 
     <header class="site-header" id="site-header">
       <div class="shell nav-shell">
-        <a class="brand" href="#top" aria-label="RLR 柏の葉 ホーム">
+        <a class="brand" href="#top" aria-label="RLR Kashiwanoha home">
           <span>RLR</span>
           <span class="brand-sigmoid" aria-hidden="true">
             <svg viewBox="0 0 116 30" fill="none" preserveAspectRatio="none">
@@ -1143,7 +1143,7 @@ SPDX-License-Identifier: BSD-3-Clause
               />
             </svg>
           </span>
-          <span>柏の葉</span>
+          <span>KASHIWANOHA</span>
         </a>
 
         <button
@@ -1152,16 +1152,16 @@ SPDX-License-Identifier: BSD-3-Clause
           type="button"
           aria-controls="site-nav"
           aria-expanded="false"
-          aria-label="メニューを開く"
+          aria-label="Open menu"
         >
           <span aria-hidden="true"></span>
         </button>
 
-        <nav class="site-nav" id="site-nav" aria-label="メインナビゲーション">
+        <nav class="site-nav" id="site-nav" aria-label="Main navigation">
           <a href="#purpose">Purpose</a>
           <a href="#core">Robotics</a>
           <a href="#wmso">WMSO</a>
-          <a href="./en/" lang="en" hreflang="en">English</a>
+          <a href="../" lang="ja" hreflang="ja">日本語</a>
         </nav>
       </div>
     </header>
@@ -1171,13 +1171,13 @@ SPDX-License-Identifier: BSD-3-Clause
         <div class="hero-copy">
           <p class="eyebrow">Learning in the real world</p>
           <h1 class="hero-title" id="hero-title">
-            不確実さを<br />
-            <span class="hero-line">確かな動きへ</span>
+            From uncertainty<br />
+            <span class="hero-line">to reliable motion</span>
           </h1>
           <p class="hero-lead">
-            RLR 柏の葉は、強化学習と模倣学習を中心にビジョンと言語を結び、WMSOを基盤として、現実世界で機能するAIロボットを実現します。
+            RLR Kashiwanoha connects vision and language through reinforcement and imitation learning, using WMSO to build AI robots that work safely in the real world.
           </p>
-          <p class="hero-note">※WMSO：World-Model-Based Skill Orchestration</p>
+          <p class="hero-note">WMSO: World-Model-Based Skill Orchestration</p>
         </div>
 
         <div class="hero-art" aria-hidden="true">
@@ -1256,13 +1256,13 @@ SPDX-License-Identifier: BSD-3-Clause
             <p class="section-label"><span>01</span> Purpose</p>
             <div>
               <h2 class="purpose-statement reveal" id="purpose-title">
-                <em>任せられる</em><span class="nowrap">AIロボットを</span>
+                <em>AI robots</em> we can trust
               </h2>
               <div class="purpose-bottom reveal">
                 <p class="purpose-copy">
-                  AIロボットには、人が安心して役割を託せることが求められます。そのためには、変化する実環境を捉え、状況に応じて判断し、リスクを抑えながら安定して動作する力が必要です。
-                  わたしたちは、視覚観測と言語指示から状態とタスクを表現します。人の教示をもとに模倣学習を行い、行動の基盤となる<span class="nowrap">ポリシー</span>を構築します。
-                  さらに、そのポリシーを強化学習で最適化し、ワールドモデルでスキル単位の状態遷移を予測します。WMSOが、強化学習と模倣学習で学習した複数のスキルから、状況に応じて次のスキルと安全な受け渡し方を選択します。環境変化に適応する仕組みとしてロボットに実装することで、人が安心して役割を託せるAIロボットを実現します。
+                  AI robots must be dependable enough for people to entrust them with meaningful roles. That requires perceiving changing real-world environments, making context-aware decisions, and operating consistently while managing risk.
+                  We represent states and tasks from visual observations and language instructions, then use human demonstrations to learn an initial policy through imitation learning.
+                  We refine that policy with reinforcement learning and use a world model to predict skill-level state transitions. WMSO selects the next skill—and a safe way to hand off between skills—from a repertoire learned through imitation and reinforcement learning. By deploying this adaptive mechanism on the robot, we aim to build AI robots people can confidently rely on.
                 </p>
                 <blockquote class="purpose-quote">
                   Learning matters when it works safely in the real world.
@@ -1350,7 +1350,7 @@ SPDX-License-Identifier: BSD-3-Clause
             <p class="section-label"><span>02</span> Robotics</p>
             <div class="core-heading">
               <h2 class="section-title reveal" id="core-title">
-                現実を捉え<br />制御を極める
+                Perceive reality.<br />Master control.
               </h2>
             </div>
           </div>
@@ -1360,32 +1360,32 @@ SPDX-License-Identifier: BSD-3-Clause
               <div class="core-card-meta">
                 <span>01 / Vision</span>
               </div>
-              <h3><small>Machine vision</small>世界を捉える</h3>
-              <p>画像観測から物体、姿勢、運動、関係性を推定し、制御に必要な状態表現へ変換します。</p>
+              <h3><small>Machine vision</small>Perceive the world</h3>
+              <p>We estimate objects, poses, motion, and relationships from visual observations, then convert them into state representations for control.</p>
             </article>
 
             <article class="core-card reveal">
               <div class="core-card-meta">
                 <span>02 / Language</span>
               </div>
-              <h3><small>Language grounding</small>意味をつなぐ</h3>
-              <p>言語指示とタスク文脈を状態表現へ接地し、知覚と行動に共通する条件を構築します。</p>
+              <h3><small>Language grounding</small>Connect meaning</h3>
+              <p>We ground language instructions and task context in state representations, creating shared conditions across perception and action.</p>
             </article>
 
             <article class="core-card core-card--imitation reveal">
               <div class="core-card-meta">
                 <span>03 / Imitation</span>
               </div>
-              <h3><small>Imitation learning</small>人間から学ぶ</h3>
-              <p>教示データに含まれる動作と判断から、制御の<span class="nowrap">初期ポリシー</span>を獲得します。</p>
+              <h3><small>Imitation learning</small>Learn from people</h3>
+              <p>We learn an initial control policy from the actions and decisions contained in demonstration data.</p>
             </article>
 
             <article class="core-card core-card--reinforcement reveal">
               <div class="core-card-meta">
                 <span>04 / Reinforcement</span>
               </div>
-              <h3><small>Reinforcement learning</small>試行で磨く</h3>
-              <p>報酬と環境フィードバックからポリシーを最適化し、未学習条件への適応性能を高めます。</p>
+              <h3><small>Reinforcement learning</small>Improve through trial</h3>
+              <p>We optimize policies through rewards and environmental feedback, improving adaptation to conditions not seen during training.</p>
             </article>
 
             <article class="core-card core-card--wmso reveal" id="wmso">
@@ -1393,9 +1393,9 @@ SPDX-License-Identifier: BSD-3-Clause
                 <span>05 / WMSO</span>
               </div>
               <div class="core-card--wmso-content">
-                <h3><small>World-model-based skill orchestration</small>状況に応じてつなぐ</h3>
+                <h3><small>World-model-based skill orchestration</small>Orchestrate for the situation</h3>
                 <p>
-                  世界モデルに基づき、強化学習と模倣学習で学習したスキルを高位の選択肢として扱います。実行中の状況を再評価しながら、スキルの選択、遷移、回復を統合します。状況の変化に即応できるスキル切り替えを目指します。
+                  Using a world model, we treat skills learned through reinforcement and imitation learning as high-level options. As execution unfolds, the system reassesses the situation and integrates skill selection, transition, and recovery. Our goal is responsive skill switching as conditions change.
                 </p>
               </div>
             </article>
@@ -1405,15 +1405,15 @@ SPDX-License-Identifier: BSD-3-Clause
                 <span>06 / Safety</span>
               </div>
               <div class="core-card--safety-content">
-                <h3><small>Safety by design</small>安全を組み込む</h3>
+                <h3><small>Safety by design</small>Build in safety</h3>
                 <p>
-                  AIロボットは動けばいいというものではありません。人と共存する環境でリスクを抑えた行動選択を目指します。
+                  It is not enough for an AI robot simply to move. We aim for risk-aware action selection in environments shared with people.
                 </p>
               </div>
             </article>
           </div>
 
-          <div class="core-flow" aria-label="ロボットの学習・制御パイプライン">
+          <div class="core-flow" aria-label="Robot learning and control pipeline">
             <span class="core-flow-item">Vision + Language</span>
             <span class="core-flow-item"><span class="core-flow-arrow" aria-hidden="true">→</span> BC / RL Skills</span>
             <span class="core-flow-item"><span class="core-flow-arrow" aria-hidden="true">→</span> World Model</span>
@@ -1430,25 +1430,26 @@ SPDX-License-Identifier: BSD-3-Clause
           <div class="closing-message reveal">
             <p class="closing-kicker">Perception · Policy · Control</p>
             <h2 id="closing-title">
-              知覚 言語 <span class="mobile-break"><br /></span>制御まで<br />
-              <em>安全に動作する<span class="mobile-break"><br /></span>AIロボットへ</em>
+              From perception and language<br />
+              to control<br />
+              <em>AI robots that operate safely</em>
             </h2>
           </div>
 
           <footer class="site-footer">
-            <p class="footer-wordmark">RLR 柏の葉</p>
+            <p class="footer-wordmark">RLR Kashiwanoha</p>
             <div class="footer-details">
               <p class="footer-contact">
                 <span>Email</span>
                 <a
-                  href="mailto:rlr.kashiwanoha@gmail.com?subject=Web%E3%82%B5%E3%82%A4%E3%83%88%E3%81%8B%E3%82%89%E3%81%AE%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B"
-                  aria-label="RLR 柏の葉へメール"
+                  href="mailto:rlr.kashiwanoha@gmail.com?subject=Website%20inquiry"
+                  aria-label="Email RLR Kashiwanoha"
                 >
                   rlr.kashiwanoha@gmail.com
                 </a>
               </p>
               <div class="footer-meta">
-                © 2025 RLR 柏の葉
+                © 2025 RLR Kashiwanoha
               </div>
             </div>
           </footer>
@@ -1483,14 +1484,14 @@ SPDX-License-Identifier: BSD-3-Clause
         menuButton.addEventListener("click", () => {
           const isOpen = menuButton.getAttribute("aria-expanded") === "true";
           menuButton.setAttribute("aria-expanded", String(!isOpen));
-          menuButton.setAttribute("aria-label", isOpen ? "メニューを開く" : "メニューを閉じる");
+          menuButton.setAttribute("aria-label", isOpen ? "Open menu" : "Close menu");
           nav.classList.toggle("is-open", !isOpen);
         });
 
         nav.querySelectorAll("a").forEach((link) => {
           link.addEventListener("click", () => {
             menuButton.setAttribute("aria-expanded", "false");
-            menuButton.setAttribute("aria-label", "メニューを開く");
+            menuButton.setAttribute("aria-label", "Open menu");
             nav.classList.remove("is-open");
           });
         });
