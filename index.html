@@ -20,6 +20,13 @@ SPDX-License-Identifier: BSD-3-Clause
     <link rel="alternate" hreflang="en" href="https://rlrk-dev.github.io/en/" />
     <link rel="alternate" hreflang="x-default" href="https://rlrk-dev.github.io/" />
     <link rel="sitemap" type="application/xml" href="https://rlrk-dev.github.io/sitemap.xml" />
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/assets/hero-kashiwanoha-landscape.webp"
+      fetchpriority="high"
+    />
     <title>RLR 柏の葉 — 不確実さを確かな動きへ</title>
 
     <style>
@@ -56,6 +63,7 @@ SPDX-License-Identifier: BSD-3-Clause
       body {
         margin: 0;
         min-width: 320px;
+        overflow-x: clip;
         color: var(--ink);
         background: var(--paper);
         font-family: var(--sans);
@@ -283,6 +291,7 @@ SPDX-License-Identifier: BSD-3-Clause
 
       .hero {
         position: relative;
+        isolation: isolate;
         display: grid;
         grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
         column-gap: clamp(48px, 6vw, 90px);
@@ -291,6 +300,28 @@ SPDX-License-Identifier: BSD-3-Clause
         min-height: 100svh;
         padding-top: 112px;
         padding-bottom: 80px;
+      }
+
+      .hero::before {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 100vw;
+        content: "";
+        background:
+          linear-gradient(
+            105deg,
+            rgba(247, 245, 239, 0.92) 0%,
+            rgba(241, 239, 232, 0.82) 48%,
+            rgba(241, 239, 232, 0.72) 100%
+          ),
+          url("/assets/hero-kashiwanoha-landscape.webp") center / cover no-repeat;
+        pointer-events: none;
+        transform: translateX(-50%);
+        -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 76%, transparent 100%);
+        mask-image: linear-gradient(to bottom, #000 0%, #000 76%, transparent 100%);
       }
 
       .hero::after {
@@ -1282,6 +1313,12 @@ SPDX-License-Identifier: BSD-3-Clause
           padding-top: 144px;
         }
 
+        .hero::before {
+          bottom: auto;
+          height: clamp(520px, 52%, 700px);
+          background-position: 62% center;
+        }
+
         .hero-copy {
           padding-bottom: 10px;
         }
@@ -1389,6 +1426,20 @@ SPDX-License-Identifier: BSD-3-Clause
 
         .hero::after {
           bottom: 24px;
+        }
+
+        .hero::before {
+          height: 520px;
+          background:
+            linear-gradient(
+              105deg,
+              rgba(247, 245, 239, 0.9) 0%,
+              rgba(241, 239, 232, 0.82) 56%,
+              rgba(241, 239, 232, 0.76) 100%
+            ),
+            url("/assets/hero-kashiwanoha-landscape.webp") 64% center / cover no-repeat;
+          -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
         }
 
         .eyebrow {
