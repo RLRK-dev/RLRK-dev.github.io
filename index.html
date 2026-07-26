@@ -853,6 +853,119 @@ SPDX-License-Identifier: BSD-3-Clause
         line-height: 2;
       }
 
+      .training-film {
+        margin: 0 0 clamp(64px, 8vw, 104px);
+      }
+
+      .training-film-frame {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        aspect-ratio: 16 / 9;
+        border: 1px solid rgba(38, 56, 47, 0.18);
+        border-radius: 18px;
+        background: var(--night);
+        box-shadow: 0 28px 72px rgba(17, 19, 15, 0.12);
+      }
+
+      .training-film-frame::after {
+        position: absolute;
+        z-index: 2;
+        inset: 14px;
+        content: "";
+        border: 1px solid rgba(250, 249, 245, 0.08);
+        border-radius: 12px;
+        pointer-events: none;
+      }
+
+      .training-film-video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .training-film-caption {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: clamp(36px, 7vw, 94px);
+        align-items: start;
+        padding: clamp(26px, 3.4vw, 42px) 0 0;
+      }
+
+      .training-film-label {
+        margin: 0 0 14px;
+        color: var(--forest);
+        font-family: var(--mono);
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .training-film-title {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(30px, 3.5vw, 48px);
+        font-weight: 500;
+        letter-spacing: -0.045em;
+        line-height: 1.25;
+      }
+
+      .training-film-detail {
+        display: grid;
+        gap: 22px;
+      }
+
+      .training-film-description {
+        max-width: 580px;
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 14px;
+        line-height: 1.95;
+      }
+
+      .training-film-credit {
+        max-width: 580px;
+        margin: -8px 0 0;
+        color: var(--ink-soft);
+        font-size: 9px;
+        line-height: 1.7;
+        opacity: 0.72;
+      }
+
+      .training-film-credit a {
+        color: inherit;
+        text-underline-offset: 0.2em;
+      }
+
+      .training-film-toggle {
+        justify-self: start;
+        min-width: 132px;
+        padding: 10px 16px;
+        border: 1px solid rgba(38, 56, 47, 0.24);
+        border-radius: 999px;
+        color: var(--forest);
+        background: transparent;
+        font-family: var(--mono);
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition:
+          color 180ms ease,
+          background-color 180ms ease,
+          border-color 180ms ease;
+      }
+
+      .training-film-toggle:hover,
+      .training-film-toggle:focus-visible {
+        color: var(--white);
+        border-color: var(--forest);
+        background: var(--forest);
+      }
+
       .core-map {
         display: grid;
         grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -1343,6 +1456,11 @@ SPDX-License-Identifier: BSD-3-Clause
           min-height: 240px;
         }
 
+        .training-film-caption {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+
         .core-map {
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 10px;
@@ -1543,6 +1661,31 @@ SPDX-License-Identifier: BSD-3-Clause
         .core-head::after {
           top: 0.08em;
           font-size: clamp(128px, 42vw, 174px);
+        }
+
+        .training-film {
+          margin-bottom: 58px;
+        }
+
+        .training-film-frame {
+          border-radius: 11px;
+        }
+
+        .training-film-frame::after {
+          inset: 8px;
+          border-radius: 7px;
+        }
+
+        .training-film-caption {
+          padding-top: 24px;
+        }
+
+        .training-film-title {
+          font-size: clamp(30px, 9.2vw, 42px);
+        }
+
+        .training-film-title br {
+          display: none;
         }
 
         .core-map {
@@ -1899,6 +2042,54 @@ SPDX-License-Identifier: BSD-3-Clause
             </div>
           </div>
 
+          <figure class="training-film reveal" aria-labelledby="ur15-training-title">
+            <div class="training-film-frame">
+              <video
+                class="training-film-video"
+                id="ur15-training-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                poster="/assets/ur15-rl-training-poster.webp"
+                aria-label="10体のUR15双腕セルが、インデックス搬送で各工程に停止・位置決めされたパレットに対し、筐体投入からコネクター挿入、配索、固定、カバー取付、電気検査、外観検査までを10工程に分担するコンセプトシミュレーション"
+              >
+                <source src="/assets/ur15-rl-training.mp4" type="video/mp4" />
+                <a href="/assets/ur15-rl-training.mp4">UR15強化学習シミュレーション動画を開く</a>
+              </video>
+            </div>
+            <figcaption class="training-film-caption">
+              <div>
+                <p class="training-film-label">UR15 line / 10-stage EV assembly</p>
+                <h3 class="training-film-title" id="ur15-training-title">
+                  10体でつなぐ、<br />EV組立10工程
+                </h3>
+              </div>
+              <div class="training-film-detail">
+                <p class="training-film-description">
+                  対象製品はEVバッテリー用ジャンクションボックスと高電圧ハーネスです。10体の双腕セルをコンベア両側へ5体ずつ千鳥配置し、①筐体投入、②高電圧コネクター同時挿入、③主配線の配索、④分岐配線の配索、⑤クリップ固定、⑥ストレインリリーフ取付、⑦カバー取付、⑧ラッチ固定、⑨電気検査、⑩外観検査を分担します。搬送はインデックス方式です。映像は動作が見えるよう実際の生産速度より低速で描いており、1サイクル26.3秒のうち約13.1秒で全パレットを1工程ピッチ1.15 m送り、各工程のストッパで止め、リフト＆クランプで位置決めピンに載せ、10体が同じ停止時間内に作業します。停止時間は共有しますが動作は工程ごとに異なり、開始時刻・所要時間・軌跡がそれぞれ違います（コネクター挿入は最短で挿入後に嵌合確認、カバー取付は最も低速、電気検査は接点接触後に約2秒静止して測定、外観検査は製品上を低速で走査）。各セルは2本のUR15とRobotiq 2F-85をY字ヨークに搭載し、ヨーク中央には工業用ステレオカメラを45°下向きでワークに向けて設置しています。セルは搬送中に180°旋回して背面のストッカから次の部品を取り、旋回で戻りながらコンベア上空の組付位置で部品を持って待機し、クランプ完了と同時に挿入・圧入を開始します。最終2工程（電気検査・外観検査）は治具を持たない検査機のため、ストッカを持たず旋回もせず、コンベア上空で待機します。ライン終端には取り出しロボットを置き、完成品を段積みストッカへ収納します。協働ロボット前提のフェンスレス構成とし、エリアスキャナ、ライトカーテン、非常停止付き操作パネル、積層信号灯、ライン制御盤、工程表示、生産管理板を配置しています。カメラはライン全体を1周し、映像は1サイクル分で、終端でも暗転せずそのまま連続再生します。同じ作業を10体で繰り返す映像ではなく、製品が工程ごとに完成へ近づく生産ラインのコンセプト映像です。実機の学習ログや実測結果ではありません。
+                </p>
+                <p class="training-film-credit">
+                  © 2023 Universal Robots A/S. Use hereof is subject to Universal Robots A/S’
+                  <a href="https://www.universal-robots.com/legal/terms-and-conditions/terms_and_conditions_for_use_of_graphical_documentation.txt" target="_blank" rel="noopener noreferrer">Terms and Conditions for Use of Graphical Documentation</a>.
+                  Robotiq 2F-85 visualization mesh © 2013 ROS-Industrial,
+                  <a href="/assets/licenses/robotiq-bsd-3-clause.txt">BSD 3-Clause License</a>.
+                </p>
+                <button
+                  class="training-film-toggle"
+                  type="button"
+                  aria-controls="ur15-training-video"
+                  aria-pressed="false"
+                  data-label-play="映像を再生"
+                  data-label-pause="映像を一時停止"
+                >
+                  映像を一時停止
+                </button>
+              </div>
+            </figcaption>
+          </figure>
+
           <div class="core-map">
             <article class="core-card reveal" data-step="01">
               <div class="core-card-meta">
@@ -2054,6 +2245,54 @@ SPDX-License-Identifier: BSD-3-Clause
         updateActiveNavigation();
         window.addEventListener("scroll", updateActiveNavigation, { passive: true });
         window.addEventListener("resize", updateActiveNavigation);
+
+        const trainingVideo = document.querySelector("#ur15-training-video");
+        const trainingToggle = document.querySelector(".training-film-toggle");
+        if (trainingVideo && trainingToggle) {
+          let pausedByUser = reduceMotion;
+          const updateTrainingToggle = () => {
+            const isPaused = trainingVideo.paused;
+            trainingToggle.textContent = isPaused
+              ? trainingToggle.dataset.labelPlay
+              : trainingToggle.dataset.labelPause;
+            trainingToggle.setAttribute("aria-pressed", String(isPaused));
+          };
+          const playTrainingVideo = () => {
+            const playback = trainingVideo.play();
+            if (playback) playback.catch(updateTrainingToggle);
+          };
+
+          trainingVideo.addEventListener("play", updateTrainingToggle);
+          trainingVideo.addEventListener("pause", updateTrainingToggle);
+          trainingToggle.addEventListener("click", () => {
+            if (trainingVideo.paused) {
+              pausedByUser = false;
+              playTrainingVideo();
+            } else {
+              pausedByUser = true;
+              trainingVideo.pause();
+            }
+          });
+
+          if (reduceMotion) {
+            trainingVideo.removeAttribute("autoplay");
+            trainingVideo.pause();
+            trainingVideo.currentTime = 0;
+          } else if ("IntersectionObserver" in window) {
+            const videoObserver = new IntersectionObserver(
+              ([entry]) => {
+                if (!entry.isIntersecting) {
+                  trainingVideo.pause();
+                } else if (!pausedByUser) {
+                  playTrainingVideo();
+                }
+              },
+              { threshold: 0.2 }
+            );
+            videoObserver.observe(trainingVideo);
+          }
+          updateTrainingToggle();
+        }
 
         const revealItems = document.querySelectorAll(".reveal");
         if (reduceMotion || !("IntersectionObserver" in window)) {
