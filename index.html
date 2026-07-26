@@ -886,31 +886,9 @@ SPDX-License-Identifier: BSD-3-Clause
       }
 
       .training-film-caption {
-        display: grid;
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-        gap: clamp(36px, 7vw, 94px);
-        align-items: start;
         padding: clamp(26px, 3.4vw, 42px) 0 0;
       }
 
-      .training-film-label {
-        margin: 0 0 14px;
-        color: var(--forest);
-        font-family: var(--mono);
-        font-size: 9px;
-        font-weight: 600;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-      }
-
-      .training-film-title {
-        margin: 0;
-        font-family: var(--serif);
-        font-size: clamp(30px, 3.5vw, 48px);
-        font-weight: 500;
-        letter-spacing: -0.045em;
-        line-height: 1.25;
-      }
 
       .training-film-detail {
         display: grid;
@@ -1448,11 +1426,6 @@ SPDX-License-Identifier: BSD-3-Clause
           min-height: 240px;
         }
 
-        .training-film-caption {
-          grid-template-columns: 1fr;
-          gap: 24px;
-        }
-
         .core-map {
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 10px;
@@ -1670,14 +1643,6 @@ SPDX-License-Identifier: BSD-3-Clause
 
         .training-film-caption {
           padding-top: 24px;
-        }
-
-        .training-film-title {
-          font-size: clamp(30px, 9.2vw, 42px);
-        }
-
-        .training-film-title br {
-          display: none;
         }
 
         .core-map {
@@ -2034,7 +1999,7 @@ SPDX-License-Identifier: BSD-3-Clause
             </div>
           </div>
 
-          <figure class="training-film reveal" aria-labelledby="ur15-training-title">
+          <figure class="training-film reveal">
             <div class="training-film-frame">
               <video
                 class="training-film-video"
@@ -2052,12 +2017,6 @@ SPDX-License-Identifier: BSD-3-Clause
               </video>
             </div>
             <figcaption class="training-film-caption">
-              <div>
-                <p class="training-film-label">UR15 line / 10-stage EV assembly</p>
-                <h3 class="training-film-title" id="ur15-training-title">
-                  10体でつなぐ、<br />EV組立10工程
-                </h3>
-              </div>
               <div class="training-film-detail">
                 <p class="training-film-credit">
                   © 2023 Universal Robots A/S. Use hereof is subject to Universal Robots A/S’
