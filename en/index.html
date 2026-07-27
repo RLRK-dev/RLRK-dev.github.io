@@ -853,11 +853,11 @@ SPDX-License-Identifier: BSD-3-Clause
         line-height: 2;
       }
 
-      .training-film {
+      .concept-film {
         margin: 0 0 clamp(64px, 8vw, 104px);
       }
 
-      .training-film-frame {
+      .concept-film-frame {
         position: relative;
         isolation: isolate;
         overflow: hidden;
@@ -868,7 +868,7 @@ SPDX-License-Identifier: BSD-3-Clause
         box-shadow: 0 28px 72px rgba(17, 19, 15, 0.12);
       }
 
-      .training-film-frame::after {
+      .concept-film-frame::after {
         position: absolute;
         z-index: 2;
         inset: 14px;
@@ -878,24 +878,24 @@ SPDX-License-Identifier: BSD-3-Clause
         pointer-events: none;
       }
 
-      .training-film-video {
+      .concept-film-video {
         display: block;
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
 
-      .training-film-caption {
+      .concept-film-caption {
         padding: clamp(26px, 3.4vw, 42px) 0 0;
       }
 
 
-      .training-film-detail {
+      .concept-film-detail {
         display: grid;
         gap: 22px;
       }
 
-      .training-film-credit {
+      .concept-film-credit {
         max-width: 580px;
         margin: 0;
         color: var(--ink-soft);
@@ -904,12 +904,12 @@ SPDX-License-Identifier: BSD-3-Clause
         opacity: 0.72;
       }
 
-      .training-film-credit a {
+      .concept-film-credit a {
         color: inherit;
         text-underline-offset: 0.2em;
       }
 
-      .training-film-toggle {
+      .concept-film-toggle {
         justify-self: start;
         min-width: 132px;
         padding: 10px 16px;
@@ -929,8 +929,8 @@ SPDX-License-Identifier: BSD-3-Clause
           border-color 180ms ease;
       }
 
-      .training-film-toggle:hover,
-      .training-film-toggle:focus-visible {
+      .concept-film-toggle:hover,
+      .concept-film-toggle:focus-visible {
         color: var(--white);
         border-color: var(--forest);
         background: var(--forest);
@@ -1628,20 +1628,20 @@ SPDX-License-Identifier: BSD-3-Clause
           font-size: clamp(128px, 42vw, 174px);
         }
 
-        .training-film {
+        .concept-film {
           margin-bottom: 58px;
         }
 
-        .training-film-frame {
+        .concept-film-frame {
           border-radius: 11px;
         }
 
-        .training-film-frame::after {
+        .concept-film-frame::after {
           inset: 8px;
           border-radius: 7px;
         }
 
-        .training-film-caption {
+        .concept-film-caption {
           padding-top: 24px;
         }
 
@@ -1999,11 +1999,11 @@ SPDX-License-Identifier: BSD-3-Clause
             </div>
           </div>
 
-          <figure class="training-film reveal">
-            <div class="training-film-frame">
+          <figure class="concept-film reveal">
+            <div class="concept-film-frame">
               <video
-                class="training-film-video"
-                id="ur15-training-video"
+                class="concept-film-video"
+                id="ur15-concept-film-video"
                 autoplay
                 muted
                 loop
@@ -2016,18 +2016,18 @@ SPDX-License-Identifier: BSD-3-Clause
                 <a href="/assets/ur15-production-line-concept.mp4">Open the UR15 production-line concept film</a>
               </video>
             </div>
-            <figcaption class="training-film-caption">
-              <div class="training-film-detail">
-                <p class="training-film-credit">
+            <figcaption class="concept-film-caption">
+              <div class="concept-film-detail">
+                <p class="concept-film-credit">
                   © 2023 Universal Robots A/S. Use hereof is subject to Universal Robots A/S’
                   <a href="https://www.universal-robots.com/legal/terms-and-conditions/terms_and_conditions_for_use_of_graphical_documentation.txt" target="_blank" rel="noopener noreferrer">Terms and Conditions for Use of Graphical Documentation</a>.
                   Robotiq 2F-85 visualization mesh © 2013 ROS-Industrial,
                   <a href="/assets/licenses/robotiq-bsd-3-clause.txt">BSD 3-Clause License</a>.
                 </p>
                 <button
-                  class="training-film-toggle"
+                  class="concept-film-toggle"
                   type="button"
-                  aria-controls="ur15-training-video"
+                  aria-controls="ur15-concept-film-video"
                   aria-pressed="false"
                   data-label-play="Play motion"
                   data-label-pause="Pause motion"
@@ -2195,57 +2195,57 @@ SPDX-License-Identifier: BSD-3-Clause
         window.addEventListener("scroll", updateActiveNavigation, { passive: true });
         window.addEventListener("resize", updateActiveNavigation);
 
-        const trainingVideo = document.querySelector("#ur15-training-video");
-        const trainingToggle = document.querySelector(".training-film-toggle");
-        if (trainingVideo && trainingToggle) {
+        const filmVideo = document.querySelector("#ur15-concept-film-video");
+        const filmToggle = document.querySelector(".concept-film-toggle");
+        if (filmVideo && filmToggle) {
           let pausedByUser = reduceMotion;
-          const updateTrainingToggle = () => {
-            const isPaused = trainingVideo.paused;
-            trainingToggle.textContent = isPaused
-              ? trainingToggle.dataset.labelPlay
-              : trainingToggle.dataset.labelPause;
-            trainingToggle.setAttribute("aria-pressed", String(isPaused));
+          const updateFilmToggle = () => {
+            const isPaused = filmVideo.paused;
+            filmToggle.textContent = isPaused
+              ? filmToggle.dataset.labelPlay
+              : filmToggle.dataset.labelPause;
+            filmToggle.setAttribute("aria-pressed", String(isPaused));
           };
           let filmOnScreen = true;
           const playTrainingVideo = () => {
-            const playback = trainingVideo.play();
-            if (playback) playback.catch(updateTrainingToggle);
+            const playback = filmVideo.play();
+            if (playback) playback.catch(updateFilmToggle);
           };
 
-          trainingVideo.addEventListener("play", updateTrainingToggle);
-          trainingVideo.addEventListener("pause", updateTrainingToggle);
+          filmVideo.addEventListener("play", updateFilmToggle);
+          filmVideo.addEventListener("pause", updateFilmToggle);
           // Nothing here should be able to leave the poster up. Start as soon
           // as there is enough film to start, and if the file itself failed to
           // arrive — a request that raced a deploy, a dropped connection — ask
           // for it once more instead of showing a still.
-          trainingVideo.addEventListener("canplay", () => {
-            if (!pausedByUser && filmOnScreen && trainingVideo.paused) {
+          filmVideo.addEventListener("canplay", () => {
+            if (!pausedByUser && filmOnScreen && filmVideo.paused) {
               playTrainingVideo();
             }
           });
           let filmReloaded = false;
-          trainingVideo.addEventListener("error", () => {
+          filmVideo.addEventListener("error", () => {
             if (filmReloaded) return;
             filmReloaded = true;
             window.setTimeout(() => {
-              trainingVideo.load();
+              filmVideo.load();
               if (!pausedByUser && filmOnScreen) playTrainingVideo();
             }, 1500);
           });
-          trainingToggle.addEventListener("click", () => {
-            if (trainingVideo.paused) {
+          filmToggle.addEventListener("click", () => {
+            if (filmVideo.paused) {
               pausedByUser = false;
               playTrainingVideo();
             } else {
               pausedByUser = true;
-              trainingVideo.pause();
+              filmVideo.pause();
             }
           });
 
           if (reduceMotion) {
-            trainingVideo.removeAttribute("autoplay");
-            trainingVideo.pause();
-            trainingVideo.currentTime = 0;
+            filmVideo.removeAttribute("autoplay");
+            filmVideo.pause();
+            filmVideo.currentTime = 0;
           } else if ("IntersectionObserver" in window) {
             // Begin fetching while the film is still a screenful away, so it
             // is running by the time it is scrolled to rather than showing
@@ -2254,20 +2254,20 @@ SPDX-License-Identifier: BSD-3-Clause
               ([entry]) => {
                 if (!entry.isIntersecting) return;
                 filmPreloader.disconnect();
-                if (trainingVideo.preload !== "auto") {
-                  trainingVideo.preload = "auto";
-                  trainingVideo.load();
+                if (filmVideo.preload !== "auto") {
+                  filmVideo.preload = "auto";
+                  filmVideo.load();
                 }
               },
               { rootMargin: "600px 0px" }
             );
-            filmPreloader.observe(trainingVideo);
+            filmPreloader.observe(filmVideo);
 
             const videoObserver = new IntersectionObserver(
               ([entry]) => {
                 filmOnScreen = entry.isIntersecting;
                 if (!filmOnScreen) {
-                  trainingVideo.pause();
+                  filmVideo.pause();
                 } else if (!pausedByUser) {
                   playTrainingVideo();
                 }
@@ -2277,9 +2277,9 @@ SPDX-License-Identifier: BSD-3-Clause
               // which reads as a still rather than as a pause.
               { threshold: 0.01 }
             );
-            videoObserver.observe(trainingVideo);
+            videoObserver.observe(filmVideo);
           }
-          updateTrainingToggle();
+          updateFilmToggle();
         }
 
         const revealItems = document.querySelectorAll(".reveal");
