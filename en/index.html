@@ -963,12 +963,8 @@ SPDX-License-Identifier: BSD-3-Clause
           box-shadow 300ms ease;
       }
 
-      .core-card:nth-child(1) {
-        grid-column: span 5;
-      }
-
-      .core-card:nth-child(2) {
-        grid-column: span 7;
+      .core-card--vla {
+        grid-column: 1 / -1;
       }
 
       .core-card::before {
@@ -1050,6 +1046,7 @@ SPDX-License-Identifier: BSD-3-Clause
         color: rgba(250, 249, 245, 0.065);
       }
 
+      .core-card--vla-content,
       .core-card--wmso-content {
         display: grid;
         grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -1065,6 +1062,7 @@ SPDX-License-Identifier: BSD-3-Clause
         margin-top: auto;
       }
 
+      .core-card--vla h3,
       .core-card--wmso h3,
       .core-card--outcome h3 {
         margin: 0;
@@ -1435,13 +1433,12 @@ SPDX-License-Identifier: BSD-3-Clause
           gap: 10px;
         }
 
-        .core-card:nth-child(1),
-        .core-card:nth-child(2),
         .core-card--imitation,
         .core-card--reinforcement {
           grid-column: auto;
         }
 
+        .core-card--vla,
         .core-card--wmso,
         .core-card--outcome {
           grid-column: 1 / -1;
@@ -1655,8 +1652,7 @@ SPDX-License-Identifier: BSD-3-Clause
         }
 
         .core-card,
-        .core-card:nth-child(1),
-        .core-card:nth-child(2),
+        .core-card--vla,
         .core-card--imitation,
         .core-card--reinforcement,
         .core-card--wmso,
@@ -1678,6 +1674,7 @@ SPDX-License-Identifier: BSD-3-Clause
           min-height: 0;
         }
 
+        .core-card--vla-content,
         .core-card--wmso-content {
           grid-template-columns: 1fr;
           gap: 20px;
@@ -1847,11 +1844,6 @@ SPDX-License-Identifier: BSD-3-Clause
               d="M96 -32C250 98 73 209 224 337C392 479 185 596 379 756"
             />
             <g>
-              <text class="thread-label" x="55" y="24">SAFETY</text>
-              <path class="thread-leader" d="M55 31L112 72" />
-              <circle class="thread-leader-node" cx="112" cy="72" r="2.2" />
-            </g>
-            <g>
               <text class="thread-label thread-label--primary" x="154" y="24">REINFORCE</text>
               <path class="thread-leader" d="M154 31L162 72" />
               <circle class="thread-leader-node" cx="162" cy="72" r="2.2" />
@@ -1860,11 +1852,6 @@ SPDX-License-Identifier: BSD-3-Clause
               <text class="thread-label thread-label--primary" x="260" y="24">IMITATION</text>
               <path class="thread-leader" d="M260 31L241 72" />
               <circle class="thread-leader-node" cx="241" cy="72" r="2.2" />
-            </g>
-            <g>
-              <text class="thread-label" x="395" y="24">SAFETY</text>
-              <path class="thread-leader" d="M395 31L344 72" />
-              <circle class="thread-leader-node" cx="344" cy="72" r="2.2" />
             </g>
             <circle class="thread-glow" cx="224" cy="337" r="34" />
             <circle class="thread-node" cx="224" cy="337" r="6" />
@@ -2043,41 +2030,37 @@ SPDX-License-Identifier: BSD-3-Clause
           </figure>
 
           <div class="core-map">
-            <article class="core-card reveal" data-step="01">
+            <article class="core-card core-card--vla reveal" data-step="01">
               <div class="core-card-meta">
-                <span>01 / Vision</span>
+                <span>01 / VLA</span>
               </div>
-              <h3><small>Machine vision</small>Perceive the world</h3>
-              <p>We estimate objects, poses, motion, and relationships from visual observations, then convert them into state representations for control.</p>
+              <div class="core-card--vla-content">
+                <h3><small>Vision-language-action</small>See it,<br />tie it to language,<br />move</h3>
+                <p>
+                  We estimate objects, poses, motion and relationships from visual observations and turn them into state representations, then ground language instructions and task context in those same representations, so perception and action share one set of conditions.
+                </p>
+              </div>
             </article>
 
-            <article class="core-card reveal" data-step="02">
+            <article class="core-card core-card--imitation reveal" data-step="02">
               <div class="core-card-meta">
-                <span>02 / Language</span>
-              </div>
-              <h3><small>Language grounding</small>Connect meaning</h3>
-              <p>We ground language instructions and task context in state representations, creating shared conditions across perception and action.</p>
-            </article>
-
-            <article class="core-card core-card--imitation reveal" data-step="03">
-              <div class="core-card-meta">
-                <span>03 / Imitation</span>
+                <span>02 / Imitation</span>
               </div>
               <h3><small>Imitation learning</small>Learn from human</h3>
               <p>We learn an initial control policy from the actions and decisions contained in demonstration data.</p>
             </article>
 
-            <article class="core-card core-card--reinforcement reveal" data-step="04">
+            <article class="core-card core-card--reinforcement reveal" data-step="03">
               <div class="core-card-meta">
-                <span>04 / Reinforcement</span>
+                <span>03 / Reinforcement</span>
               </div>
               <h3><small>Reinforcement learning</small>Improve through trial</h3>
               <p>We optimize policies through rewards and environmental feedback, improving adaptation to conditions not seen during training.</p>
             </article>
 
-            <article class="core-card core-card--wmso reveal" id="wmso" data-step="05">
+            <article class="core-card core-card--wmso reveal" id="wmso" data-step="04">
               <div class="core-card-meta">
-                <span>05 / WMSO</span>
+                <span>04 / WMSO</span>
               </div>
               <div class="core-card--wmso-content">
                 <h3><small>World-model-based skill orchestration</small>Orchestrate for the situation</h3>
@@ -2087,9 +2070,9 @@ SPDX-License-Identifier: BSD-3-Clause
               </div>
             </article>
 
-            <article class="core-card core-card--outcome reveal" data-step="06">
+            <article class="core-card core-card--outcome reveal" data-step="05">
               <div class="core-card-meta">
-                <span>06 / Outcome</span>
+                <span>05 / Outcome</span>
               </div>
               <div class="core-card--outcome-content">
                 <h3><small>Safety, stability, return</small>Pursuing safety, stability and return</h3>
