@@ -1032,7 +1032,7 @@ SPDX-License-Identifier: BSD-3-Clause
           var(--night-soft);
       }
 
-      .core-card--safety {
+      .core-card--outcome {
         grid-column: span 4;
         min-height: 410px;
         color: var(--night);
@@ -1058,7 +1058,7 @@ SPDX-License-Identifier: BSD-3-Clause
         margin-top: auto;
       }
 
-      .core-card--safety-content {
+      .core-card--outcome-content {
         display: grid;
         grid-template-columns: 1fr;
         gap: 24px;
@@ -1066,18 +1066,22 @@ SPDX-License-Identifier: BSD-3-Clause
       }
 
       .core-card--wmso h3,
-      .core-card--safety h3 {
+      .core-card--outcome h3 {
         margin: 0;
       }
 
-      .core-card--safety h3 {
+      .core-card--outcome h3 {
         max-width: 340px;
+        /* Three nouns and a verb do not fit at the display size the other
+           cards use, and this card is the narrow one of its row. */
+        font-size: clamp(25px, 2.5vw, 34px);
         color: var(--forest);
       }
 
-      .core-card--safety p {
+      .core-card--outcome p {
         color: var(--ink-soft);
       }
+
 
       .core-card-meta {
         display: flex;
@@ -1439,11 +1443,11 @@ SPDX-License-Identifier: BSD-3-Clause
         }
 
         .core-card--wmso,
-        .core-card--safety {
+        .core-card--outcome {
           grid-column: 1 / -1;
         }
 
-        .core-card--safety-content {
+        .core-card--outcome-content {
           grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
           gap: clamp(32px, 6vw, 64px);
           align-items: end;
@@ -1656,7 +1660,7 @@ SPDX-License-Identifier: BSD-3-Clause
         .core-card--imitation,
         .core-card--reinforcement,
         .core-card--wmso,
-        .core-card--safety {
+        .core-card--outcome {
           grid-column: 1 / -1;
         }
 
@@ -1670,7 +1674,7 @@ SPDX-License-Identifier: BSD-3-Clause
         }
 
         .core-card--wmso,
-        .core-card--safety {
+        .core-card--outcome {
           min-height: 0;
         }
 
@@ -1680,7 +1684,7 @@ SPDX-License-Identifier: BSD-3-Clause
           margin-top: 54px;
         }
 
-        .core-card--safety-content {
+        .core-card--outcome-content {
           grid-template-columns: 1fr;
           gap: 20px;
           margin-top: 54px;
@@ -2083,14 +2087,14 @@ SPDX-License-Identifier: BSD-3-Clause
               </div>
             </article>
 
-            <article class="core-card core-card--safety reveal" data-step="06">
+            <article class="core-card core-card--outcome reveal" data-step="06">
               <div class="core-card-meta">
-                <span>06 / Safety</span>
+                <span>06 / Outcome</span>
               </div>
-              <div class="core-card--safety-content">
-                <h3><small>Safety by design</small>安全を組み込む</h3>
+              <div class="core-card--outcome-content">
+                <h3><small>Safety, stability, return</small>安全性、<br />安定性、<br />投資効率の追求</h3>
                 <p>
-                  AIロボットは動けばいいというものではありません。人と共存する環境でリスクを抑えた行動選択を目指します。
+                  製造現場の過酷で高水準な要求に応えます。
                 </p>
               </div>
             </article>
