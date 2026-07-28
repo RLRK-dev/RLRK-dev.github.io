@@ -1032,7 +1032,7 @@ SPDX-License-Identifier: BSD-3-Clause
           var(--night-soft);
       }
 
-      .core-card--safety {
+      .core-card--outcome {
         grid-column: span 4;
         min-height: 410px;
         color: var(--night);
@@ -1058,7 +1058,7 @@ SPDX-License-Identifier: BSD-3-Clause
         margin-top: auto;
       }
 
-      .core-card--safety-content {
+      .core-card--outcome-content {
         display: grid;
         grid-template-columns: 1fr;
         gap: 24px;
@@ -1066,17 +1066,55 @@ SPDX-License-Identifier: BSD-3-Clause
       }
 
       .core-card--wmso h3,
-      .core-card--safety h3 {
+      .core-card--outcome h3 {
         margin: 0;
       }
 
-      .core-card--safety h3 {
+      .core-card--outcome h3 {
         max-width: 340px;
         color: var(--forest);
       }
 
-      .core-card--safety p {
+      .core-card--outcome p {
         color: var(--ink-soft);
+      }
+
+      .core-metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+        gap: 18px clamp(20px, 3vw, 44px);
+        margin: 6px 0 0;
+      }
+
+      .core-metric {
+        padding-top: 13px;
+        border-top: 1px solid rgba(38, 56, 47, 0.16);
+      }
+
+      .core-metric dt {
+        display: flex;
+        gap: 8px;
+        align-items: baseline;
+        margin: 0 0 7px;
+        color: var(--forest);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+
+      .core-metric dt span {
+        font-family: var(--mono);
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        opacity: 0.62;
+      }
+
+      .core-metric dd {
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 12px;
+        line-height: 1.7;
       }
 
       .core-card-meta {
@@ -1439,11 +1477,11 @@ SPDX-License-Identifier: BSD-3-Clause
         }
 
         .core-card--wmso,
-        .core-card--safety {
+        .core-card--outcome {
           grid-column: 1 / -1;
         }
 
-        .core-card--safety-content {
+        .core-card--outcome-content {
           grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
           gap: clamp(32px, 6vw, 64px);
           align-items: end;
@@ -1656,7 +1694,7 @@ SPDX-License-Identifier: BSD-3-Clause
         .core-card--imitation,
         .core-card--reinforcement,
         .core-card--wmso,
-        .core-card--safety {
+        .core-card--outcome {
           grid-column: 1 / -1;
         }
 
@@ -1670,7 +1708,7 @@ SPDX-License-Identifier: BSD-3-Clause
         }
 
         .core-card--wmso,
-        .core-card--safety {
+        .core-card--outcome {
           min-height: 0;
         }
 
@@ -1680,7 +1718,7 @@ SPDX-License-Identifier: BSD-3-Clause
           margin-top: 54px;
         }
 
-        .core-card--safety-content {
+        .core-card--outcome-content {
           grid-template-columns: 1fr;
           gap: 20px;
           margin-top: 54px;
@@ -2083,15 +2121,37 @@ SPDX-License-Identifier: BSD-3-Clause
               </div>
             </article>
 
-            <article class="core-card core-card--safety reveal" data-step="06">
+            <article class="core-card core-card--outcome reveal" data-step="06">
               <div class="core-card-meta">
-                <span>06 / Safety</span>
+                <span>06 / Production</span>
               </div>
-              <div class="core-card--safety-content">
-                <h3><small>Safety by design</small>Build in safety</h3>
+              <div class="core-card--outcome-content">
+                <h3><small>Line performance</small>The floor's numbers</h3>
                 <p>
-                  It is not enough for an AI robot simply to move. We aim for risk-aware action selection in environments shared with people.
+                  A plant does not measure whether the robot moves.
                 </p>
+                <dl class="core-metrics">
+                  <div class="core-metric">
+                    <dt><span>01</span>Throughput</dt>
+                    <dd>Units through the line each hour</dd>
+                  </div>
+                  <div class="core-metric">
+                    <dt><span>02</span>Repeatability</dt>
+                    <dd>The same stop position every time</dd>
+                  </div>
+                  <div class="core-metric">
+                    <dt><span>03</span>Predictability</dt>
+                    <dd>A cycle time that can be planned around</dd>
+                  </div>
+                  <div class="core-metric">
+                    <dt><span>04</span>Stability</dt>
+                    <dd>No drift over a long run</dd>
+                  </div>
+                  <div class="core-metric">
+                    <dt><span>05</span>Return</dt>
+                    <dd>Output against what was invested</dd>
+                  </div>
+                </dl>
               </div>
             </article>
           </div>
