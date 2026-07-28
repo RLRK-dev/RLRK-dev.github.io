@@ -1072,6 +1072,9 @@ SPDX-License-Identifier: BSD-3-Clause
 
       .core-card--outcome h3 {
         max-width: 340px;
+        /* Three nouns and a verb do not fit at the display size the other
+           cards use, and this card is the narrow one of its row. */
+        font-size: clamp(25px, 2.5vw, 34px);
         color: var(--forest);
       }
 
@@ -2123,10 +2126,10 @@ SPDX-License-Identifier: BSD-3-Clause
 
             <article class="core-card core-card--outcome reveal" data-step="06">
               <div class="core-card-meta">
-                <span>06 / Production</span>
+                <span>06 / Outcome</span>
               </div>
               <div class="core-card--outcome-content">
-                <h3><small>Line performance</small>The floor's numbers</h3>
+                <h3><small>Safety, stability, return</small>Pursuing safety, stability and return</h3>
                 <p>
                   A plant does not measure whether the robot moves.
                 </p>
