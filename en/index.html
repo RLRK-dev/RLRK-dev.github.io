@@ -1,7 +1,6 @@
 <!--
 Copyright (c) 2022-2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
 All rights reserved.
-
 SPDX-License-Identifier: BSD-3-Clause
 -->
 <!doctype html>
@@ -9,2284 +8,366 @@ SPDX-License-Identifier: BSD-3-Clause
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f1efe8" />
+    <meta name="theme-color" content="#f2f0e9" />
     <meta
       name="description"
-      content="RLR Kashiwanoha connects vision and language through reinforcement and imitation learning, using WMSO to build AI robots that work safely in the real world."
+      content="WMSO is a research architecture that safely prepares a good execution initial state, then releases learned closed-loop skill dynamics when commit conditions are satisfied."
     />
     <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="WMSO — Prepare the right initial state. Release the skill." />
+    <meta
+      property="og:description"
+      content="World-Model-Based Skill Orchestration plans skills, launch states, handoffs, and recovery instead of repeatedly optimizing a long sequence of low-level actions."
+    />
+    <meta property="og:url" content="https://rlrk-dev.github.io/en/" />
     <link rel="canonical" href="https://rlrk-dev.github.io/en/" />
     <link rel="alternate" hreflang="ja" href="https://rlrk-dev.github.io/" />
     <link rel="alternate" hreflang="en" href="https://rlrk-dev.github.io/en/" />
     <link rel="alternate" hreflang="x-default" href="https://rlrk-dev.github.io/" />
-    <link rel="sitemap" type="application/xml" href="https://rlrk-dev.github.io/sitemap.xml" />
-    <link
-      rel="preload"
-      as="image"
-      type="image/webp"
-      href="/assets/hero-kashiwanoha-landscape.webp"
-      fetchpriority="high"
-    />
-    <title>RLR Kashiwanoha — From Uncertainty to Reliable Motion</title>
-
-    <style>
-      :root {
-        --paper: #f1efe8;
-        --paper-deep: #e6e2d8;
-        --paper-soft: #f7f5ef;
-        --ink: #151713;
-        --ink-soft: #555a52;
-        --night: #11130f;
-        --night-soft: #1a1d17;
-        --forest: #26382f;
-        --forest-bright: #3d5b4b;
-        --white: #faf9f5;
-        --line: rgba(21, 23, 19, 0.16);
-        --line-light: rgba(250, 249, 245, 0.16);
-        --shadow-soft: 0 24px 70px rgba(17, 19, 15, 0.08);
-        --sans: "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, Arial, sans-serif;
-        --serif: "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", Georgia, serif;
-        --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-        --shell: min(100% - 48px, 1320px);
-      }
-
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        margin: 0;
-        min-width: 320px;
-        overflow-x: clip;
-        color: var(--ink);
-        background: var(--paper);
-        font-family: var(--sans);
-        font-weight: 400;
-        line-height: 1.7;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      body::before {
-        position: fixed;
-        z-index: -1;
-        inset: 0;
-        content: "";
-        pointer-events: none;
-        background-image:
-          radial-gradient(circle at 82% 8%, rgba(38, 56, 47, 0.07), transparent 24%),
-          linear-gradient(rgba(21, 23, 19, 0.035) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(21, 23, 19, 0.035) 1px, transparent 1px);
-        background-repeat: no-repeat, repeat, repeat;
-        background-size: auto, 48px 48px, 48px 48px;
-        mask-image: linear-gradient(to bottom, #000 0%, transparent 72%);
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      .nowrap {
-        white-space: nowrap;
-      }
-
-      button {
-        color: inherit;
-        font: inherit;
-      }
-
-      :focus-visible {
-        outline: 2px solid var(--forest-bright);
-        outline-offset: 5px;
-      }
-
-      ::selection {
-        color: var(--white);
-        background: var(--forest);
-      }
-
-      .skip-link {
-        position: fixed;
-        z-index: 100;
-        top: 12px;
-        left: 12px;
-        padding: 10px 14px;
-        color: var(--white);
-        background: var(--forest);
-        transform: translateY(-160%);
-        transition: transform 180ms ease;
-      }
-
-      .skip-link:focus {
-        transform: translateY(0);
-      }
-
-      .shell {
-        width: var(--shell);
-        margin-inline: auto;
-      }
-
-      .site-header {
-        position: fixed;
-        z-index: 50;
-        top: 0;
-        right: 0;
-        left: 0;
-        border-bottom: 1px solid transparent;
-        transition:
-          background-color 240ms ease,
-          border-color 240ms ease,
-          box-shadow 240ms ease;
-      }
-
-      .site-header.is-scrolled,
-      .site-header:has(.site-nav.is-open) {
-        border-color: var(--line);
-        background: rgba(241, 239, 232, 0.92);
-        box-shadow: 0 8px 30px rgba(17, 19, 15, 0.045);
-        backdrop-filter: blur(20px);
-      }
-
-      .nav-shell {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        min-height: 80px;
-        transition: min-height 240ms ease;
-      }
-
-      .site-header.is-scrolled .nav-shell {
-        min-height: 68px;
-      }
-
-      .brand {
-        position: relative;
-        display: inline-grid;
-        grid-template-columns: auto 7px auto;
-        gap: 2.5px;
-        align-items: center;
-        padding-block: 5px;
-        color: var(--ink);
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: 0.22em;
-        white-space: nowrap;
-      }
-
-      .brand > span:not(.brand-sigmoid) {
-        position: relative;
-        z-index: 1;
-      }
-
-      .brand-sigmoid {
-        display: block;
-        width: 7px;
-        height: 20px;
-      }
-
-      .brand-sigmoid svg {
-        position: absolute;
-        z-index: 0;
-        top: 50%;
-        left: 0;
-        width: 100%;
-        height: 30px;
-        overflow: visible;
-        transform: translateY(-50%);
-      }
-
-      .site-nav {
-        display: flex;
-        gap: 34px;
-        align-items: center;
-      }
-
-      .site-nav a {
-        position: relative;
-        display: inline-flex;
-        gap: 8px;
-        align-items: baseline;
-        padding-block: 8px;
-        color: var(--ink-soft);
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-      }
-
-      .site-nav a::before {
-        content: attr(data-index);
-        color: rgba(21, 23, 19, 0.38);
-        font-family: var(--mono);
-        font-size: 7px;
-        letter-spacing: 0.08em;
-      }
-
-      .site-nav a::after {
-        position: absolute;
-        right: 0;
-        bottom: 3px;
-        left: 0;
-        height: 1px;
-        content: "";
-        background: var(--ink);
-        transform: scaleX(0);
-        transform-origin: right;
-        transition: transform 220ms ease;
-      }
-
-      .site-nav a:hover,
-      .site-nav a:focus-visible,
-      .site-nav a.is-active {
-        color: var(--ink);
-      }
-
-      .site-nav a:hover::after,
-      .site-nav a:focus-visible::after,
-      .site-nav a.is-active::after {
-        transform: scaleX(1);
-        transform-origin: left;
-      }
-
-      .menu-button {
-        display: none;
-        width: 42px;
-        height: 42px;
-        padding: 0;
-        border: 1px solid var(--line);
-        border-radius: 50%;
-        background: transparent;
-        cursor: pointer;
-      }
-
-      .menu-button span,
-      .menu-button::before,
-      .menu-button::after {
-        display: block;
-        width: 16px;
-        height: 1px;
-        margin: 4px auto;
-        content: "";
-        background: currentcolor;
-        transition: transform 180ms ease;
-      }
-
-      .menu-button[aria-expanded="true"] span {
-        opacity: 0;
-      }
-
-      .menu-button[aria-expanded="true"]::before {
-        transform: translateY(5px) rotate(45deg);
-      }
-
-      .menu-button[aria-expanded="true"]::after {
-        transform: translateY(-5px) rotate(-45deg);
-      }
-
-      .hero {
-        position: relative;
-        isolation: isolate;
-        display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
-        column-gap: clamp(48px, 6vw, 90px);
-        row-gap: 24px;
-        align-items: center;
-        min-height: 100svh;
-        padding-top: 112px;
-        padding-bottom: 80px;
-      }
-
-      .hero::before {
-        position: absolute;
-        z-index: -1;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        width: 100vw;
-        content: "";
-        background:
-          linear-gradient(
-            105deg,
-            rgba(247, 245, 239, 0.86) 0%,
-            rgba(241, 239, 232, 0.72) 48%,
-            rgba(241, 239, 232, 0.6) 100%
-          ),
-          url("/assets/hero-kashiwanoha-landscape.webp") center / cover no-repeat;
-        pointer-events: none;
-        transform: translateX(-50%);
-        -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 76%, transparent 100%);
-        mask-image: linear-gradient(to bottom, #000 0%, #000 76%, transparent 100%);
-      }
-
-      .hero::after {
-        position: absolute;
-        right: 0;
-        bottom: 38px;
-        left: 0;
-        height: 1px;
-        content: "";
-        background: linear-gradient(90deg, var(--line), transparent 78%);
-      }
-
-      .hero-copy {
-        position: relative;
-        z-index: 2;
-      }
-
-      .eyebrow {
-        display: flex;
-        gap: 14px;
-        align-items: center;
-        margin: 0 0 34px;
-        font-family: var(--mono);
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-      }
-
-      .eyebrow::before {
-        width: 24px;
-        height: 1px;
-        content: "";
-        background: currentcolor;
-      }
-
-      .eyebrow span {
-        display: grid;
-        width: 30px;
-        height: 30px;
-        place-items: center;
-        border: 1px solid var(--line);
-        border-radius: 50%;
-        color: var(--forest);
-        font-size: 8px;
-      }
-
-      .hero-title {
-        max-width: 860px;
-        margin: 0;
-        font-family: var(--serif);
-        font-size: clamp(52px, 5.25vw, 86px);
-        font-weight: 500;
-        letter-spacing: -0.055em;
-        line-height: 1.06;
-      }
-
-      .hero-line {
-        color: var(--forest);
-        white-space: nowrap;
-      }
-
-      .hero-lead {
-        max-width: 600px;
-        margin: 38px 0 0;
-        padding-left: 22px;
-        border-left: 1px solid rgba(38, 56, 47, 0.42);
-        color: var(--ink-soft);
-        font-size: clamp(16px, 1.2vw, 18px);
-        line-height: 1.9;
-      }
-
-      .hero-note {
-        max-width: 600px;
-        margin: 10px 0 0;
-        padding-left: 23px;
-        color: var(--ink-soft);
-        font-size: 11px;
-        letter-spacing: 0.02em;
-        line-height: 1.6;
-      }
-
-      .hero-scroll {
-        display: inline-flex;
-        gap: 14px;
-        align-items: center;
-        margin-top: 46px;
-        color: var(--ink-soft);
-        font-family: var(--mono);
-        font-size: 9px;
-        font-weight: 600;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-      }
-
-      .hero-scroll::after {
-        width: 54px;
-        height: 1px;
-        content: "";
-        background: var(--forest);
-        transition: width 220ms ease;
-      }
-
-      .hero-scroll:hover::after,
-      .hero-scroll:focus-visible::after {
-        width: 76px;
-      }
-
-      .hero-art {
-        position: relative;
-        min-height: 0;
-        aspect-ratio: 1;
-        overflow: hidden;
-        border: 1px solid rgba(250, 249, 245, 0.09);
-        border-radius: 18px;
-        color: var(--white);
-        background:
-          radial-gradient(circle at 50% 38%, rgba(250, 249, 245, 0.11), transparent 28%),
-          linear-gradient(165deg, #30483b 0%, var(--night) 72%);
-        box-shadow: var(--shadow-soft);
-        isolation: isolate;
-      }
-
-      .hero-art::before {
-        position: absolute;
-        z-index: 0;
-        inset: 0;
-        content: "";
-        background-image:
-          linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-        background-size: 44px 44px;
-        mask-image: linear-gradient(to bottom, #000, transparent 92%);
-      }
-
-      .hero-art::after {
-        position: absolute;
-        z-index: 2;
-        inset: 18px;
-        content: "";
-        border: 1px solid rgba(250, 249, 245, 0.08);
-        border-radius: 11px;
-        pointer-events: none;
-      }
-
-      .hero-art svg {
-        position: absolute;
-        z-index: 1;
-        inset: 5% -7% -4%;
-        width: 114%;
-        height: 99%;
-        transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-      }
-
-      .hero-art--world-model {
-        min-height: 0;
-        aspect-ratio: 760 / 300;
-      }
-
-      .purpose-model {
-        width: min(100%, 1040px);
-        margin: clamp(84px, 10vw, 144px) auto 0;
-      }
-
-      .hero-art--world-model svg {
-        inset: 0;
-        width: 100%;
-        height: 100%;
-      }
-
-      .hero-art--world-model::after {
-        inset: 14px;
-        border-radius: 12px;
-      }
-
-      .hero-art--world-model .hero-model-mobile {
-        display: none;
-      }
-
-      .hero-art > img {
-        position: absolute;
-        z-index: 1;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      @media (hover: hover) {
-        .hero-art:hover svg {
-          transform: scale(1.012);
-        }
-      }
-
-      .thread-path {
-        fill: none;
-        stroke: rgba(250, 249, 245, 0.76);
-        stroke-linecap: round;
-        stroke-width: 1.4;
-      }
-
-      .thread-path--soft {
-        stroke: rgba(250, 249, 245, 0.17);
-        stroke-width: 1;
-      }
-
-      .thread-path--accent {
-        stroke: var(--white);
-        stroke-dasharray: 4 12;
-        stroke-width: 2;
-        animation: thread-flow 16s linear infinite;
-      }
-
-      .thread-node {
-        fill: var(--night);
-        stroke: var(--white);
-        stroke-width: 1.4;
-      }
-
-      .thread-label {
-        fill: rgba(250, 249, 245, 0.48);
-        font-family: var(--mono);
-        font-size: 10.5px;
-        font-weight: 600;
-        letter-spacing: 0.16em;
-        text-anchor: middle;
-      }
-
-      .thread-label--primary {
-        fill: rgba(250, 249, 245, 0.82);
-      }
-
-      .hero-art--world-model .thread-label {
-        font-size: 10px;
-      }
-
-      .thread-leader {
-        fill: none;
-        stroke: rgba(250, 249, 245, 0.42);
-        stroke-linecap: round;
-        stroke-width: 0.8;
-      }
-
-      .thread-leader-node {
-        fill: var(--forest);
-        stroke: rgba(250, 249, 245, 0.72);
-        stroke-width: 0.8;
-      }
-
-      .thread-glow {
-        fill: var(--white);
-        opacity: 0.14;
-        transform-origin: center;
-        animation: pulse 3.2s ease-in-out infinite;
-      }
-
-      .signal-strip {
-        overflow: hidden;
-        color: rgba(250, 249, 245, 0.82);
-        border-top: 1px solid var(--line-light);
-        border-bottom: 1px solid var(--line-light);
-        background: var(--forest);
-      }
-
-      .signal-track {
-        display: flex;
-        width: max-content;
-        animation: marquee 28s linear infinite;
-      }
-
-      .signal-item {
-        display: inline-flex;
-        gap: 36px;
-        align-items: center;
-        padding: 17px 40px;
-        font-family: var(--mono);
-        font-size: 10px;
-        font-weight: 600;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-      }
-
-      .signal-item::after {
-        width: 7px;
-        height: 7px;
-        content: "";
-        border: 1px solid rgba(250, 249, 245, 0.7);
-        border-radius: 50%;
-        background: transparent;
-        box-shadow: 0 0 0 3px rgba(250, 249, 245, 0.045);
-      }
-
-      .section {
-        scroll-margin-top: 80px;
-        padding-block: clamp(104px, 12vw, 180px);
-      }
-
-      .section-label {
-        display: flex;
-        gap: 14px;
-        align-items: center;
-        margin: 0;
-        font-family: var(--mono);
-        font-size: 9px;
-        font-weight: 600;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-      }
-
-      .section-label span {
-        display: grid;
-        width: 32px;
-        height: 32px;
-        min-width: 32px;
-        place-items: center;
-        border: 1px solid var(--line);
-        border-radius: 50%;
-        color: var(--ink-soft);
-        font-size: 8px;
-        letter-spacing: 0.08em;
-      }
-
-      .purpose {
-        position: relative;
-        overflow: hidden;
-        color: var(--white);
-        background:
-          radial-gradient(circle at 82% 14%, rgba(61, 91, 75, 0.24), transparent 26%),
-          var(--night);
-      }
-
-      .purpose::before {
-        position: absolute;
-        top: clamp(110px, 11vw, 176px);
-        right: clamp(-300px, -14vw, -150px);
-        width: clamp(440px, 48vw, 760px);
-        aspect-ratio: 1;
-        content: "";
-        border: 1px solid rgba(250, 249, 245, 0.07);
-        border-radius: 50%;
-        pointer-events: none;
-      }
-
-      .purpose::after {
-        position: absolute;
-        top: clamp(112px, 12vw, 180px);
-        right: clamp(24px, 6vw, 96px);
-        content: "01";
-        color: transparent;
-        font-family: var(--serif);
-        font-size: clamp(126px, 18vw, 252px);
-        font-weight: 500;
-        letter-spacing: -0.09em;
-        line-height: 0.8;
-        pointer-events: none;
-        -webkit-text-stroke: 1px rgba(250, 249, 245, 0.08);
-      }
-
-      .purpose > .shell {
-        position: relative;
-        z-index: 1;
-      }
-
-      .purpose .section-label span {
-        color: rgba(250, 249, 245, 0.58);
-        border-color: var(--line-light);
-      }
-
-      .purpose-copy {
-        color: rgba(250, 249, 245, 0.68);
-      }
-
-      .purpose-grid {
-        position: relative;
-        display: grid;
-        grid-template-columns: minmax(180px, 0.35fr) minmax(0, 1.65fr);
-        gap: clamp(48px, 8vw, 130px);
-      }
-
-      .purpose-statement {
-        max-width: 960px;
-        margin: 0;
-        color: rgba(250, 249, 245, 0.7);
-        font-family: var(--serif);
-        font-size: clamp(42px, 5vw, 72px);
-        font-weight: 500;
-        letter-spacing: -0.05em;
-        line-height: 1.25;
-        white-space: nowrap;
-      }
-
-      .purpose-statement em {
-        color: var(--white);
-        font-style: normal;
-      }
-
-      .purpose-bottom {
-        display: grid;
-        grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.55fr);
-        gap: clamp(40px, 5vw, 76px);
-        margin-top: 76px;
-        padding-top: 38px;
-        border-top: 1px solid var(--line-light);
-      }
-
-      .purpose-copy {
-        max-width: 680px;
-        margin: 0;
-      }
-
-      .purpose-copy p {
-        margin: 0;
-        color: rgba(250, 249, 245, 0.62);
-        font-size: 15px;
-        line-height: 2.05;
-      }
-
-      .purpose-copy p + p {
-        margin-top: 24px;
-      }
-
-      .purpose-copy p:first-child {
-        color: rgba(250, 249, 245, 0.84);
-        font-size: 16px;
-      }
-
-      .purpose-quote {
-        position: relative;
-        justify-self: end;
-        max-width: 360px;
-        margin: 0;
-        padding: 24px 0 24px 28px;
-        border-left: 1px solid rgba(250, 249, 245, 0.28);
-        color: var(--white);
-        font-family: var(--serif);
-        font-size: 24px;
-        line-height: 1.5;
-      }
-
-      .purpose-quote small {
-        display: block;
-        margin-top: 18px;
-        color: rgba(250, 249, 245, 0.48);
-        font-family: var(--mono);
-        font-size: 9px;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-      }
-
-      .section-title {
-        max-width: 820px;
-        margin: 0;
-        font-family: var(--serif);
-        font-size: clamp(36px, 4.8vw, 70px);
-        font-weight: 500;
-        letter-spacing: -0.055em;
-        line-height: 1.2;
-      }
-
-      .core {
-        position: relative;
-        overflow: hidden;
-        padding-bottom: clamp(88px, 9vw, 132px);
-        border-top: 1px solid rgba(21, 23, 19, 0.08);
-        background: var(--paper-deep);
-      }
-
-      .core::before {
-        position: absolute;
-        top: clamp(74px, 8vw, 122px);
-        right: clamp(-280px, -14vw, -120px);
-        width: clamp(360px, 44vw, 680px);
-        aspect-ratio: 1;
-        content: "";
-        border: 1px solid rgba(38, 56, 47, 0.1);
-        border-radius: 50%;
-        pointer-events: none;
-      }
-
-      .core > .shell {
-        position: relative;
-        z-index: 1;
-      }
-
-      .core-head {
-        position: relative;
-        isolation: isolate;
-        display: grid;
-        grid-template-columns: 0.45fr 1.55fr;
-        gap: clamp(48px, 8vw, 130px);
-        align-items: start;
-        min-height: clamp(220px, 24vw, 320px);
-        margin-bottom: clamp(52px, 7vw, 88px);
-        padding-bottom: clamp(40px, 5vw, 62px);
-        border-bottom: 1px solid var(--line);
-      }
-
-      .core-head::after {
-        position: absolute;
-        z-index: 0;
-        top: -0.14em;
-        right: 0;
-        content: "02";
-        color: transparent;
-        font-family: var(--serif);
-        font-size: clamp(132px, 20vw, 278px);
-        font-weight: 500;
-        letter-spacing: -0.09em;
-        line-height: 0.8;
-        pointer-events: none;
-        -webkit-text-stroke: 1px rgba(38, 56, 47, 0.13);
-      }
-
-      .core-head > * {
-        position: relative;
-        z-index: 1;
-      }
-
-      .core-heading {
-        align-self: end;
-        max-width: 900px;
-      }
-
-      .core-intro {
-        max-width: 650px;
-        margin: 32px 0 0;
-        color: var(--ink-soft);
-        font-size: 16px;
-        line-height: 2;
-      }
-
-      .concept-film {
-        margin: 0 0 clamp(64px, 8vw, 104px);
-      }
-
-      .concept-film-frame {
-        position: relative;
-        isolation: isolate;
-        overflow: hidden;
-        aspect-ratio: 16 / 9;
-        border: 1px solid rgba(38, 56, 47, 0.18);
-        border-radius: 18px;
-        background: var(--night);
-        box-shadow: 0 28px 72px rgba(17, 19, 15, 0.12);
-      }
-
-      .concept-film-frame::after {
-        position: absolute;
-        z-index: 2;
-        inset: 14px;
-        content: "";
-        border: 1px solid rgba(250, 249, 245, 0.08);
-        border-radius: 12px;
-        pointer-events: none;
-      }
-
-      .concept-film-video {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .concept-film-caption {
-        padding: clamp(26px, 3.4vw, 42px) 0 0;
-      }
-
-
-      .concept-film-detail {
-        display: grid;
-        gap: 22px;
-      }
-
-      .concept-film-credit {
-        max-width: 580px;
-        margin: 0;
-        color: var(--ink-soft);
-        font-size: 9px;
-        line-height: 1.7;
-        opacity: 0.72;
-      }
-
-      .concept-film-credit a {
-        color: inherit;
-        text-underline-offset: 0.2em;
-      }
-
-      .concept-film-toggle {
-        justify-self: start;
-        min-width: 132px;
-        padding: 10px 16px;
-        border: 1px solid rgba(38, 56, 47, 0.24);
-        border-radius: 999px;
-        color: var(--forest);
-        background: transparent;
-        font-family: var(--mono);
-        font-size: 9px;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition:
-          color 180ms ease,
-          background-color 180ms ease,
-          border-color 180ms ease;
-      }
-
-      .concept-film-toggle:hover,
-      .concept-film-toggle:focus-visible {
-        color: var(--white);
-        border-color: var(--forest);
-        background: var(--forest);
-      }
-
-      .core-map {
-        display: grid;
-        grid-template-columns: repeat(12, minmax(0, 1fr));
-        gap: 14px;
-        background: transparent;
-      }
-
-      .core-card {
-        position: relative;
-        isolation: isolate;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        min-height: 390px;
-        padding: clamp(28px, 3.2vw, 46px);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        background:
-          linear-gradient(145deg, rgba(250, 249, 245, 0.36), transparent 54%),
-          var(--paper);
-        box-shadow: 0 20px 52px rgba(17, 19, 15, 0.035);
-        transition:
-          translate 300ms cubic-bezier(0.22, 1, 0.36, 1),
-          border-color 300ms ease,
-          box-shadow 300ms ease;
-      }
-
-      .core-card--vla {
-        grid-column: 1 / -1;
-      }
-
-      .core-card::before {
-        position: absolute;
-        z-index: 0;
-        right: -104px;
-        bottom: -136px;
-        width: 262px;
-        aspect-ratio: 1;
-        content: "";
-        border: 1px solid rgba(38, 56, 47, 0.12);
-        border-radius: 50%;
-        pointer-events: none;
-      }
-
-      .core-card::after {
-        position: absolute;
-        z-index: 0;
-        top: clamp(12px, 1.8vw, 24px);
-        right: clamp(18px, 2.4vw, 34px);
-        content: attr(data-step);
-        color: rgba(38, 56, 47, 0.075);
-        font-family: var(--serif);
-        font-size: clamp(84px, 9vw, 132px);
-        font-weight: 500;
-        letter-spacing: -0.08em;
-        line-height: 0.82;
-        pointer-events: none;
-      }
-
-      .core-card > * {
-        position: relative;
-        z-index: 1;
-      }
-
-      .core-card--imitation {
-        grid-column: span 7;
-        color: var(--white);
-        border-color: rgba(250, 249, 245, 0.08);
-        background:
-          linear-gradient(145deg, rgba(250, 249, 245, 0.035), transparent 52%),
-          var(--forest);
-      }
-
-      .core-card--reinforcement {
-        grid-column: span 5;
-        color: var(--white);
-        border-color: rgba(250, 249, 245, 0.08);
-        background:
-          linear-gradient(145deg, rgba(250, 249, 245, 0.035), transparent 52%),
-          var(--forest);
-      }
-
-      .core-card--wmso {
-        grid-column: span 8;
-        min-height: 410px;
-        color: var(--white);
-        border-color: rgba(250, 249, 245, 0.08);
-        background:
-          linear-gradient(145deg, rgba(250, 249, 245, 0.035), transparent 52%),
-          var(--night-soft);
-      }
-
-      .core-card--outcome {
-        grid-column: span 4;
-        min-height: 410px;
-        color: var(--night);
-      }
-
-      .core-card--imitation::before,
-      .core-card--reinforcement::before,
-      .core-card--wmso::before {
-        border-color: rgba(250, 249, 245, 0.12);
-      }
-
-      .core-card--imitation::after,
-      .core-card--reinforcement::after,
-      .core-card--wmso::after {
-        color: rgba(250, 249, 245, 0.065);
-      }
-
-      .core-card--vla-content,
-      .core-card--wmso-content {
-        display: grid;
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-        gap: clamp(32px, 6vw, 96px);
-        align-items: end;
-        margin-top: auto;
-      }
-
-      .core-card--outcome-content {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 24px;
-        margin-top: auto;
-      }
-
-      .core-card--vla h3,
-      .core-card--wmso h3,
-      .core-card--outcome h3 {
-        margin: 0;
-      }
-
-      .core-card--outcome h3 {
-        max-width: 340px;
-        /* Three nouns and a verb do not fit at the display size the other
-           cards use, and this card is the narrow one of its row. */
-        font-size: clamp(25px, 2.5vw, 34px);
-        color: var(--forest);
-      }
-
-      .core-card--outcome p {
-        color: var(--ink-soft);
-      }
-
-
-      .core-card-meta {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        width: 100%;
-        font-family: var(--mono);
-        font-size: 9px;
-        font-weight: 600;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-      }
-
-      .core-card-meta::after {
-        flex: 1;
-        height: 1px;
-        margin-left: 18px;
-        content: "";
-        background: currentColor;
-        opacity: 0.18;
-      }
-
-      .core-card h3 {
-        margin: auto 0 18px;
-        font-family: var(--serif);
-        font-size: clamp(31px, 3.4vw, 48px);
-        font-weight: 500;
-        letter-spacing: -0.045em;
-        line-height: 1.25;
-      }
-
-      .core-card h3 small {
-        display: block;
-        margin-bottom: 10px;
-        font-family: var(--mono);
-        font-size: 10px;
-        font-weight: 500;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-      }
-
-      .core-card p {
-        max-width: 510px;
-        margin: 0;
-        color: var(--ink-soft);
-        font-size: 14px;
-        line-height: 1.9;
-      }
-
-      .core-card--imitation p {
-        color: rgba(250, 249, 245, 0.62);
-      }
-
-      .core-card--reinforcement p {
-        color: rgba(250, 249, 245, 0.68);
-      }
-
-      .core-card--wmso p {
-        max-width: 510px;
-        color: rgba(250, 249, 245, 0.68);
-      }
-
-      .core-card:nth-child(2).is-visible {
-        animation-delay: 70ms;
-      }
-
-      .core-card:nth-child(3).is-visible {
-        animation-delay: 90ms;
-      }
-
-      .core-card:nth-child(4).is-visible {
-        animation-delay: 160ms;
-      }
-
-      @media (hover: hover) {
-        .core-card:hover {
-          border-color: rgba(38, 56, 47, 0.3);
-          box-shadow: 0 28px 64px rgba(17, 19, 15, 0.09);
-          translate: 0 -4px;
-        }
-
-        .core-card--imitation:hover,
-        .core-card--reinforcement:hover,
-        .core-card--wmso:hover {
-          border-color: rgba(250, 249, 245, 0.2);
-        }
-      }
-
-      .mobile-break {
-        display: none;
-      }
-
-      .closing {
-        position: relative;
-        overflow: hidden;
-        padding-block: clamp(132px, 15vw, 216px) 64px;
-        color: var(--white);
-        background:
-          radial-gradient(circle at 50% 36%, rgba(250, 249, 245, 0.055), transparent 28%),
-          linear-gradient(145deg, #2b4136 0%, #20342a 72%);
-      }
-
-      .closing::before {
-        position: absolute;
-        top: 9%;
-        left: 50%;
-        width: clamp(430px, 58vw, 840px);
-        aspect-ratio: 1;
-        content: "";
-        border: 1px solid rgba(250, 249, 245, 0.08);
-        border-radius: 50%;
-        pointer-events: none;
-        transform: translateX(-50%);
-      }
-
-      .closing::after {
-        position: absolute;
-        right: clamp(-20px, 2vw, 38px);
-        bottom: 80px;
-        content: "03";
-        color: transparent;
-        font-family: var(--serif);
-        font-size: clamp(150px, 22vw, 310px);
-        font-weight: 500;
-        letter-spacing: -0.09em;
-        line-height: 0.8;
-        pointer-events: none;
-        -webkit-text-stroke: 1px rgba(250, 249, 245, 0.075);
-      }
-
-      .closing > .shell {
-        position: relative;
-        z-index: 1;
-      }
-
-      .closing-label {
-        position: absolute;
-        top: 0;
-        left: 0;
-        color: rgba(250, 249, 245, 0.72);
-      }
-
-      .closing-label span {
-        color: rgba(250, 249, 245, 0.58);
-        border-color: var(--line-light);
-      }
-
-      .closing-message {
-        position: relative;
-        max-width: 1040px;
-        margin: 0 auto;
-        padding-top: 108px;
-        text-align: center;
-      }
-
-      .closing-message::before {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 1px;
-        height: 76px;
-        content: "";
-        background: linear-gradient(var(--white), transparent);
-        opacity: 0.52;
-      }
-
-      .closing h2 {
-        margin: 0;
-        color: rgba(250, 249, 245, 0.68);
-        font-family: var(--serif);
-        font-size: clamp(44px, 5.5vw, 72px);
-        font-weight: 500;
-        letter-spacing: -0.055em;
-        line-height: 1.25;
-      }
-
-      .closing h2 em {
-        color: var(--white);
-        font-style: normal;
-      }
-
-      .site-footer {
-        display: flex;
-        gap: 24px;
-        align-items: end;
-        justify-content: space-between;
-        margin-top: 150px;
-        padding: 30px 32px;
-        border: 1px solid var(--line-light);
-        border-radius: 16px;
-        background: rgba(17, 19, 15, 0.12);
-      }
-
-      .footer-wordmark {
-        margin: 0;
-        font-size: clamp(14px, 2.33vw, 30px);
-        font-weight: 700;
-        letter-spacing: -0.055em;
-        line-height: 0.85;
-      }
-
-      .footer-meta {
-        color: rgba(250, 249, 245, 0.48);
-        font-family: var(--mono);
-        font-size: 9px;
-        letter-spacing: 0.12em;
-        line-height: 1.8;
-        text-align: right;
-        text-transform: uppercase;
-      }
-
-      .footer-details {
-        display: flex;
-        gap: 36px;
-        align-items: end;
-      }
-
-      .footer-contact {
-        margin: 0;
-        color: rgba(250, 249, 245, 0.78);
-        font-size: 12px;
-        line-height: 1.8;
-        text-align: right;
-      }
-
-      .footer-contact span {
-        display: block;
-        color: rgba(250, 249, 245, 0.42);
-        font-family: var(--mono);
-        font-size: 9px;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-      }
-
-      .footer-contact a {
-        display: inline-flex;
-        gap: 8px;
-        align-items: center;
-        border-bottom: 1px solid rgba(250, 249, 245, 0.3);
-        transition: border-color 180ms ease;
-      }
-
-      .footer-contact a::after {
-        content: "↗";
-        font-size: 10px;
-      }
-
-      .footer-contact a:hover,
-      .footer-contact a:focus-visible {
-        border-color: var(--white);
-      }
-
-      .reveal {
-        opacity: 1;
-        transform: none;
-      }
-
-      .reveal.is-visible {
-        animation: reveal-up 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
-      }
-
-      @keyframes reveal-up {
-        from {
-          opacity: 0;
-          transform: translateY(24px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes thread-flow {
-        to {
-          stroke-dashoffset: -160;
-        }
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 0.1;
-          transform: scale(0.88);
-        }
-        50% {
-          opacity: 0.32;
-          transform: scale(1.12);
-        }
-      }
-
-      @keyframes marquee {
-        to {
-          transform: translateX(-50%);
-        }
-      }
-
-      @media (max-width: 1180px) {
-        .purpose-grid {
-          grid-template-columns: minmax(130px, 0.25fr) minmax(0, 1.75fr);
-          gap: clamp(36px, 5vw, 64px);
-        }
-
-        .purpose-bottom {
-          grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.6fr);
-          gap: clamp(36px, 5vw, 56px);
-        }
-      }
-
-      @media (max-width: 980px) {
-        :root {
-          --shell: min(100% - 36px, 760px);
-        }
-
-        .hero {
-          grid-template-columns: 1fr;
-          padding-top: 144px;
-        }
-
-        .hero::before {
-          bottom: auto;
-          height: clamp(520px, 52%, 700px);
-          background-position: 62% center;
-        }
-
-        .hero-copy {
-          padding-bottom: 10px;
-        }
-
-        .hero-art {
-          min-height: 0;
-          border-radius: 18px;
-        }
-
-        .hero-art--world-model {
-          grid-column: auto;
-          min-height: 0;
-        }
-
-        .purpose-grid,
-        .core-head {
-          grid-template-columns: 1fr;
-        }
-
-        .core-head {
-          gap: 32px;
-          min-height: 240px;
-        }
-
-        .core-map {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 10px;
-        }
-
-        .core-card--imitation,
-        .core-card--reinforcement {
-          grid-column: auto;
-        }
-
-        .core-card--vla,
-        .core-card--wmso,
-        .core-card--outcome {
-          grid-column: 1 / -1;
-        }
-
-        .core-card--outcome-content {
-          grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-          gap: clamp(32px, 6vw, 64px);
-          align-items: end;
-        }
-      }
-
-      @media (max-width: 700px) {
-        :root {
-          --shell: min(100% - 28px, 560px);
-        }
-
-        body::before {
-          background-size: auto, 32px 32px, 32px 32px;
-        }
-
-        .nav-shell {
-          min-height: 68px;
-        }
-
-        .menu-button {
-          display: block;
-        }
-
-        .site-nav {
-          position: fixed;
-          top: 68px;
-          right: 0;
-          left: 0;
-          display: grid;
-          gap: 0;
-          padding: 18px 14px 24px;
-          border-bottom: 1px solid var(--line);
-          background: rgba(241, 239, 232, 0.98);
-          opacity: 0;
-          pointer-events: none;
-          transform: translateY(-12px);
-          transition:
-            opacity 180ms ease,
-            transform 180ms ease;
-        }
-
-        .site-nav.is-open {
-          opacity: 1;
-          pointer-events: auto;
-          transform: translateY(0);
-        }
-
-        .site-nav a {
-          padding: 14px 4px;
-          border-bottom: 1px solid var(--line);
-          font-size: 13px;
-        }
-
-        .site-nav a::after {
-          display: none;
-        }
-
-        .hero {
-          min-height: auto;
-          padding-top: 122px;
-          padding-bottom: 64px;
-        }
-
-        .hero::after {
-          bottom: 24px;
-        }
-
-        .hero::before {
-          height: 520px;
-          background:
-            linear-gradient(
-              105deg,
-              rgba(247, 245, 239, 0.84) 0%,
-              rgba(241, 239, 232, 0.72) 56%,
-              rgba(241, 239, 232, 0.64) 100%
-            ),
-            url("/assets/hero-kashiwanoha-landscape.webp") 64% center / cover no-repeat;
-          -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
-          mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
-        }
-
-        .eyebrow {
-          margin-bottom: 26px;
-        }
-
-        .hero-title {
-          font-size: clamp(40px, 10.8vw, 54px);
-          line-height: 1.12;
-        }
-
-        .hero-lead {
-          margin-top: 28px;
-          font-size: 16px;
-        }
-
-        .hero-scroll {
-          margin-top: 34px;
-        }
-
-        .hero-art {
-          min-height: 0;
-          border-radius: 12px;
-        }
-
-        .hero-art::after {
-          inset: 12px;
-          border-radius: 8px;
-        }
-
-        .hero-art--world-model {
-          min-height: 0;
-          aspect-ratio: 340 / 210;
-        }
-
-        .hero-art--world-model .hero-model-desktop {
-          display: none;
-        }
-
-        .hero-art--world-model .hero-model-mobile {
-          display: block;
-        }
-
-        .hero-art--world-model .thread-label {
-          font-size: 8px;
-        }
-
-        .signal-item {
-          gap: 28px;
-          padding: 14px 28px;
-          font-size: 9px;
-        }
-
-        .purpose::before {
-          top: 116px;
-          right: -250px;
-          width: 440px;
-        }
-
-        .purpose::after {
-          top: 128px;
-          right: 14px;
-          font-size: clamp(116px, 38vw, 150px);
-        }
-
-        .purpose-bottom {
-          grid-template-columns: 1fr;
-          gap: 38px;
-          margin-top: 58px;
-        }
-
-        .purpose-statement {
-          white-space: normal;
-        }
-
-        .purpose-quote {
-          order: -1;
-          justify-self: start;
-          max-width: 100%;
-        }
-
-        .purpose-copy p {
-          font-size: 15px;
-          line-height: 2;
-        }
-
-        .purpose-copy p:first-child {
-          font-size: 16px;
-        }
-
-        .purpose-model {
-          margin-top: 72px;
-        }
-
-        .core-head {
-          gap: 28px;
-          min-height: 260px;
-          margin-bottom: 48px;
-        }
-
-        .core-head::after {
-          top: 0.08em;
-          font-size: clamp(128px, 42vw, 174px);
-        }
-
-        .concept-film {
-          margin-bottom: 58px;
-        }
-
-        .concept-film-frame {
-          border-radius: 11px;
-        }
-
-        .concept-film-frame::after {
-          inset: 8px;
-          border-radius: 7px;
-        }
-
-        .concept-film-caption {
-          padding-top: 24px;
-        }
-
-        .core-map {
-          grid-template-columns: 1fr;
-          gap: 10px;
-        }
-
-        .core-card,
-        .core-card--vla,
-        .core-card--imitation,
-        .core-card--reinforcement,
-        .core-card--wmso,
-        .core-card--outcome {
-          grid-column: 1 / -1;
-        }
-
-        .core-card {
-          min-height: 320px;
-          border-radius: 10px;
-        }
-
-        .core-card::after {
-          font-size: 88px;
-        }
-
-        .core-card--wmso,
-        .core-card--outcome {
-          min-height: 0;
-        }
-
-        .core-card--vla-content,
-        .core-card--wmso-content {
-          grid-template-columns: 1fr;
-          gap: 20px;
-          margin-top: 54px;
-        }
-
-        .core-card--outcome-content {
-          grid-template-columns: 1fr;
-          gap: 20px;
-          margin-top: 54px;
-        }
-
-        .core-card--wmso p {
-          max-width: none;
-        }
-
-        .mobile-break {
-          display: inline;
-        }
-
-        .closing::before {
-          top: 14%;
-          width: clamp(360px, 120vw, 520px);
-          height: auto;
-        }
-
-        .closing::after {
-          right: -12px;
-          bottom: 190px;
-          font-size: 148px;
-        }
-
-        .closing-message {
-          padding-top: 96px;
-        }
-
-        .closing-message::before {
-          height: 64px;
-        }
-
-        .closing h2 {
-          font-size: clamp(38px, 11.4vw, 54px);
-        }
-
-        .site-footer {
-          display: block;
-          margin-top: 110px;
-          padding: 24px;
-          border-radius: 12px;
-        }
-
-        .footer-meta {
-          margin-top: 30px;
-          text-align: left;
-        }
-
-        .footer-details {
-          display: block;
-          margin-top: 30px;
-        }
-
-        .footer-contact {
-          text-align: left;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-
-        *,
-        *::before,
-        *::after {
-          scroll-behavior: auto !important;
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important;
-        }
-
-        .reveal {
-          opacity: 1;
-          transform: none;
-          animation: none;
-        }
-      }
-    </style>
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <link rel="preload" as="image" type="image/webp" href="/assets/hero-kashiwanoha-landscape.webp" fetchpriority="high" />
+    <link rel="stylesheet" href="/assets/site.css" />
+    <title>WMSO — Prepare the right initial state. Release the skill.</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ResearchProject",
+        "name": "World-Model-Based Skill Orchestration",
+        "alternateName": "WMSO",
+        "description": "A research architecture that prepares a safe execution initial state and releases learned closed-loop skill dynamics.",
+        "url": "https://rlrk-dev.github.io/en/"
+      }
+    </script>
   </head>
-
   <body>
-    <a class="skip-link" href="#main">Skip to main content</a>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <header class="site-header" id="site-header">
+    <header class="site-header" data-header>
       <div class="shell nav-shell">
-        <a class="brand" href="#top" aria-label="RLR Kashiwanoha home">
-          <span>RLR</span>
-          <span class="brand-sigmoid" aria-hidden="true">
-            <svg viewBox="0 0 116 30" fill="none" preserveAspectRatio="none">
-              <path
-                d="M1 25H27C29 25 30 5 32 5H115"
-                stroke="#26382f"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                vector-effect="non-scaling-stroke"
-              />
-            </svg>
-          </span>
-          <span>Kashiwanoha</span>
+        <a class="brand" href="#top" aria-label="WMSO home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>WMSO</span>
         </a>
-
-        <button
-          class="menu-button"
-          id="menu-button"
-          type="button"
-          aria-controls="site-nav"
-          aria-expanded="false"
-          aria-label="Open menu"
-        >
-          <span aria-hidden="true"></span>
+        <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu" data-menu-button>
+          <span></span>
         </button>
-
-        <nav class="site-nav" id="site-nav" aria-label="Main navigation">
-          <a href="#purpose" data-index="01">Purpose</a>
-          <a href="#core" data-index="02">Robotics</a>
-          <a href="#wmso" data-index="03">WMSO</a>
-          <a href="../" data-index="JA" lang="ja" hreflang="ja">日本語</a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-nav>
+          <a href="#concept" data-index="01">Concept</a>
+          <a href="#architecture" data-index="02">Architecture</a>
+          <a href="#safety" data-index="03">Safety boundary</a>
+          <a href="#robotics" data-index="04">Robotics</a>
+          <a href="/" data-index="JA" lang="ja">日本語</a>
         </nav>
       </div>
     </header>
 
     <main id="main">
-      <section class="shell hero" id="top" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow"><span>00</span> Learning in the real world</p>
-          <h1 class="hero-title" id="hero-title">
-            From uncertainty<br />
-            <span class="hero-line">to reliable motion</span>
-          </h1>
-          <p class="hero-lead">
-            RLR Kashiwanoha connects vision and language through reinforcement and imitation learning, using WMSO to build AI robots that work safely in the real world.
-          </p>
-          <p class="hero-note">WMSO: World-Model-Based Skill Orchestration</p>
-          <a class="hero-scroll" href="#purpose">Explore the system</a>
-        </div>
+      <div class="hero-wrap" id="top">
+        <section class="shell hero" aria-labelledby="hero-title">
+          <div class="hero-copy reveal">
+            <p class="eyebrow">World-Model-Based Skill Orchestration</p>
+            <h1 class="hero-title" id="hero-title">
+              Prepare the right<br />initial state.<br /><em>Release the skill.</em>
+            </h1>
+            <p class="hero-lead">
+              WMSO is a research architecture that does not repeatedly solve a long sequence of fine-grained future actions.
+              Instead, a world model predicts and orchestrates <strong>which skill to use, how to initialize it, when a handoff is valid, and how to recover from failure.</strong>
+            </p>
+            <p class="hero-note">Research architecture · design under development · no performance claim</p>
+            <div class="hero-actions">
+              <a class="button primary" href="#architecture">See how it works</a>
+              <a class="button" href="#robotics">See the robotics stack</a>
+            </div>
+          </div>
 
-        <div class="hero-art" aria-hidden="true">
-          <!-- Placeholder: replace this SVG with an actual simulation image. -->
-          <svg viewBox="0 0 560 720" preserveAspectRatio="xMidYMid meet">
-            <path
-              id="thread-safety-left"
-              class="thread-path thread-path--soft"
-              d="M36 -30C198 86 20 242 174 342C314 432 140 591 288 764"
-            />
-            <path
-              id="thread-imitation"
-              class="thread-path"
-              d="M171 -35C348 92 116 199 274 326C442 462 230 598 424 764"
-            />
-            <path
-              id="thread-safety-right"
-              class="thread-path thread-path--soft"
-              d="M291 -30C442 101 227 241 358 352C499 472 332 593 528 750"
-            />
-            <path
-              id="thread-reinforce"
-              class="thread-path thread-path--accent"
-              d="M96 -32C250 98 73 209 224 337C392 479 185 596 379 756"
-            />
-            <g>
-              <text class="thread-label thread-label--primary" x="154" y="24">REINFORCE</text>
-              <path class="thread-leader" d="M154 31L162 72" />
-              <circle class="thread-leader-node" cx="162" cy="72" r="2.2" />
-            </g>
-            <g>
-              <text class="thread-label thread-label--primary" x="260" y="24">IMITATION</text>
-              <path class="thread-leader" d="M260 31L241 72" />
-              <circle class="thread-leader-node" cx="241" cy="72" r="2.2" />
-            </g>
-            <circle class="thread-glow" cx="224" cy="337" r="34" />
-            <circle class="thread-node" cx="224" cy="337" r="6" />
-            <circle class="thread-node" cx="378" cy="756" r="5" />
-          </svg>
-        </div>
-
-      </section>
-
-      <div class="signal-strip" aria-hidden="true">
-        <div class="signal-track">
-          <span class="signal-item">Vision</span>
-          <span class="signal-item">Language</span>
-          <span class="signal-item">Imitation learning</span>
-          <span class="signal-item">Reinforcement learning</span>
-          <span class="signal-item">WMSO</span>
-          <span class="signal-item">Safety</span>
-          <span class="signal-item">Vision</span>
-          <span class="signal-item">Language</span>
-          <span class="signal-item">Imitation learning</span>
-          <span class="signal-item">Reinforcement learning</span>
-          <span class="signal-item">WMSO</span>
-          <span class="signal-item">Safety</span>
-        </div>
+          <aside class="hero-console reveal" aria-label="WMSO summary diagram">
+            <div class="console-inner">
+              <p class="console-kicker"><span>WMSO / operating principle</span><span>prepare → commit → release</span></p>
+              <h2 class="console-title">
+                Plan an <strong>executable launch condition</strong>,<br />not a chain of joint commands.
+              </h2>
+              <div class="mini-flow" aria-hidden="true">
+                <div class="mini-stage"><small>01 / PREPARE</small><b>Refine candidates in an output-null workspace</b></div>
+                <span class="mini-arrow">→</span>
+                <div class="mini-stage"><small>02 / COMMIT</small><b>Check safety, compatibility, and uncertainty</b></div>
+                <span class="mini-arrow">→</span>
+                <div class="mini-stage"><small>03 / RELEASE</small><b>Activate a closed-loop learned skill</b></div>
+              </div>
+              <p class="console-status">Uncommitted plans cannot directly change actuator output</p>
+            </div>
+          </aside>
+        </section>
       </div>
 
-      <section class="section purpose" id="purpose" aria-labelledby="purpose-title">
+      <section class="section tight" id="concept" aria-labelledby="concept-title">
         <div class="shell">
-          <div class="purpose-grid">
-            <p class="section-label"><span>01</span> Purpose</p>
+          <div class="section-head reveal">
+            <p class="section-index">01 / Core idea</p>
             <div>
-              <h2 class="purpose-statement reveal" id="purpose-title">
-                <em>AI robots</em> we can trust
-              </h2>
-              <div class="purpose-bottom reveal">
-                <div class="purpose-copy">
-                  <p>
-                    AI robots must be dependable enough for people to entrust them with meaningful roles. That requires perceiving changing real-world environments, making context-aware decisions, and operating consistently while managing risk.
-                  </p>
-                  <p>
-                    We represent states and tasks from visual observations and language instructions, then use human demonstrations to learn an initial policy through imitation learning.
-                  </p>
-                  <p>
-                    We refine that policy with reinforcement learning and use a world model to predict skill-level state transitions. WMSO selects the next skill—and a safe way to hand off between skills—from a repertoire learned through imitation and reinforcement learning. By deploying this adaptive mechanism on the robot, we aim to build AI robots people can confidently rely on.
-                  </p>
-                </div>
-                <blockquote class="purpose-quote">
-                  Learning matters when it works safely in the real world.
-                  <small>Our reason to exist</small>
-                </blockquote>
-              </div>
-            </div>
-          </div>
-
-          <div class="hero-art hero-art--world-model purpose-model reveal" aria-hidden="true">
-            <svg class="hero-model-desktop" viewBox="0 0 760 300" preserveAspectRatio="xMidYMid meet">
-              <path class="thread-path thread-path--soft" d="M-12 242C92 225 136 177 218 160C312 141 348 65 448 56C558 46 624 94 776 54" />
-              <path class="thread-path thread-path--soft" d="M-8 260C104 228 140 185 218 160C318 128 358 104 448 112C554 122 630 80 774 106" />
-              <path class="thread-path thread-path--soft" d="M-10 276C98 228 143 194 218 160C316 115 376 169 448 166C548 162 628 139 774 178" />
-              <path class="thread-path thread-path--soft" d="M-4 288C98 244 147 205 218 160C300 109 371 214 448 222C548 232 636 194 778 250" />
-              <path class="thread-path thread-path--accent" d="M-12 254C91 230 144 185 218 160C308 130 363 139 448 145C552 153 626 128 776 144" />
-
-              <circle class="thread-glow" cx="218" cy="160" r="38" />
-              <circle class="thread-node" cx="218" cy="160" r="6.5" />
-              <circle class="thread-leader-node" cx="448" cy="56" r="4" />
-              <circle class="thread-leader-node" cx="448" cy="112" r="4" />
-              <circle class="thread-node" cx="448" cy="145" r="4.5" />
-              <circle class="thread-leader-node" cx="448" cy="166" r="4" />
-              <circle class="thread-leader-node" cx="448" cy="222" r="4" />
-              <circle class="thread-leader-node" cx="690" cy="69" r="4" />
-              <circle class="thread-leader-node" cx="690" cy="97.5" r="4" />
-              <circle class="thread-node" cx="690" cy="138.7" r="4.5" />
-              <circle class="thread-leader-node" cx="690" cy="160.9" r="4" />
-              <circle class="thread-leader-node" cx="690" cy="224.9" r="4" />
-
-              <g>
-                <text class="thread-label" x="64" y="64">OBSERVE</text>
-                <path class="thread-leader" d="M64 74L128 108L166 139" />
-                <circle class="thread-leader-node" cx="166" cy="139" r="2.5" />
-              </g>
-              <g>
-                <text class="thread-label" x="404" y="30">IMAGINE</text>
-                <path class="thread-leader" d="M414 39L448 56" />
-              </g>
-              <g>
-                <text class="thread-label thread-label--primary" x="690" y="30">SKILL</text>
-                <path class="thread-leader" d="M690 39V64" />
-              </g>
-            </svg>
-
-            <svg class="hero-model-mobile" viewBox="0 0 340 210" preserveAspectRatio="xMidYMid meet">
-              <path class="thread-path thread-path--soft" d="M-8 180C42 168 70 135 111 118C152 101 173 49 220 42C264 35 290 61 348 43" />
-              <path class="thread-path thread-path--soft" d="M-6 190C48 171 73 141 111 118C153 93 177 80 220 85C267 90 296 68 348 82" />
-              <path class="thread-path thread-path--soft" d="M-4 199C47 177 75 149 111 118C149 85 180 126 220 132C263 138 298 116 348 145" />
-              <path class="thread-path thread-path--soft" d="M-2 207C47 180 76 155 111 118C149 78 180 159 220 168C263 178 300 155 348 184" />
-              <path class="thread-path thread-path--accent" d="M-8 185C43 171 71 139 111 118C151 97 180 103 220 105C267 108 297 97 348 105" />
-
-              <circle class="thread-glow" cx="111" cy="118" r="28" />
-              <circle class="thread-node" cx="111" cy="118" r="5" />
-              <circle class="thread-leader-node" cx="220" cy="42" r="3" />
-              <circle class="thread-leader-node" cx="220" cy="85" r="3" />
-              <circle class="thread-node" cx="220" cy="105" r="3.5" />
-              <circle class="thread-leader-node" cx="220" cy="132" r="3" />
-              <circle class="thread-leader-node" cx="305" cy="49.5" r="3" />
-              <circle class="thread-leader-node" cx="305" cy="77.5" r="3" />
-              <circle class="thread-node" cx="305" cy="102.1" r="3.5" />
-              <circle class="thread-leader-node" cx="305" cy="130.4" r="3" />
-              <circle class="thread-leader-node" cx="305" cy="169.4" r="3" />
-
-              <g>
-                <text class="thread-label" x="42" y="48">OBSERVE</text>
-                <path class="thread-leader" d="M45 56L70 76L87 96" />
-                <circle class="thread-leader-node" cx="87" cy="96" r="2" />
-              </g>
-              <g>
-                <text class="thread-label" x="205" y="20">IMAGINE</text>
-                <path class="thread-leader" d="M211 27L220 42" />
-              </g>
-              <g>
-                <text class="thread-label thread-label--primary" x="305" y="18">SKILL</text>
-                <path class="thread-leader" d="M305 25V44" />
-              </g>
-            </svg>
-          </div>
-        </div>
-      </section>
-
-      <section class="section core" id="core" aria-labelledby="core-title">
-        <div class="shell">
-          <div class="core-head">
-            <p class="section-label"><span>02</span> Robotics</p>
-            <div class="core-heading">
-              <h2 class="section-title reveal" id="core-title">
-                Perceive reality.<br />Master control.
-              </h2>
-            </div>
-          </div>
-
-          <figure class="concept-film reveal">
-            <div class="concept-film-frame">
-              <video
-                class="concept-film-video"
-                id="ur15-concept-film-video"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                poster="/assets/ur15-production-line-concept-poster.webp"
-                aria-label="Black-and-white concept film of ten dual-arm UR15 cells assembling an EV battery junction box on pallets held by an indexed conveyor"
-              >
-                <source src="/assets/ur15-production-line-concept.mp4" type="video/mp4" />
-                <a href="/assets/ur15-production-line-concept.mp4">Open the UR15 production-line concept film</a>
-              </video>
-            </div>
-            <figcaption class="concept-film-caption">
-              <div class="concept-film-detail">
-                <p class="concept-film-credit">
-                  © 2023 Universal Robots A/S. Use hereof is subject to Universal Robots A/S’
-                  <a href="https://www.universal-robots.com/legal/terms-and-conditions/terms_and_conditions_for_use_of_graphical_documentation.txt" target="_blank" rel="noopener noreferrer">Terms and Conditions for Use of Graphical Documentation</a>.
-                  Robotiq 2F-85 visualization mesh © 2013 ROS-Industrial,
-                  <a href="/assets/licenses/robotiq-bsd-3-clause.txt">BSD 3-Clause License</a>.
-                </p>
-                <button
-                  class="concept-film-toggle"
-                  type="button"
-                  aria-controls="ur15-concept-film-video"
-                  aria-pressed="false"
-                  data-label-play="Play motion"
-                  data-label-pause="Pause motion"
-                >
-                  Pause motion
-                </button>
-              </div>
-            </figcaption>
-          </figure>
-
-          <div class="core-map">
-            <article class="core-card core-card--vla reveal" data-step="01">
-              <div class="core-card-meta">
-                <span>01 / VLA</span>
-              </div>
-              <div class="core-card--vla-content">
-                <h3><small>Vision-language-action</small>See it,<br />tie it to language,<br />move</h3>
-                <p>
-                  We estimate objects, poses, motion and relationships from visual observations and turn them into state representations, then ground language instructions and task context in those same representations, so perception and action share one set of conditions.
-                </p>
-              </div>
-            </article>
-
-            <article class="core-card core-card--imitation reveal" data-step="02">
-              <div class="core-card-meta">
-                <span>02 / Imitation</span>
-              </div>
-              <h3><small>Imitation learning</small>Learn from human</h3>
-              <p>We learn an initial control policy from the actions and decisions contained in demonstration data.</p>
-            </article>
-
-            <article class="core-card core-card--reinforcement reveal" data-step="03">
-              <div class="core-card-meta">
-                <span>03 / Reinforcement</span>
-              </div>
-              <h3><small>Reinforcement learning</small>Improve through trial</h3>
-              <p>We optimize policies through rewards and environmental feedback, improving adaptation to conditions not seen during training.</p>
-            </article>
-
-            <article class="core-card core-card--wmso reveal" id="wmso" data-step="04">
-              <div class="core-card-meta">
-                <span>04 / WMSO</span>
-              </div>
-              <div class="core-card--wmso-content">
-                <h3><small>World-model-based skill orchestration</small>Orchestrate for the situation</h3>
-                <p>
-                  Using a world model, we treat skills learned through reinforcement and imitation learning as high-level options. As execution unfolds, the system reassesses the situation and integrates skill selection, transition, and recovery. Our goal is responsive skill switching as conditions change.
-                </p>
-              </div>
-            </article>
-
-            <article class="core-card core-card--outcome reveal" data-step="05">
-              <div class="core-card-meta">
-                <span>05 / Outcome</span>
-              </div>
-              <div class="core-card--outcome-content">
-                <h3><small>Safety, stability, return</small>Pursuing safety, stability and return</h3>
-                <p>
-                  We meet the punishing, exacting demands of a production floor.
-                </p>
-              </div>
-            </article>
-          </div>
-
-        </div>
-      </section>
-
-      <section class="closing" aria-labelledby="closing-title">
-        <div class="shell">
-          <p class="section-label closing-label"><span>03</span> Direction</p>
-          <div class="closing-message reveal">
-            <h2 id="closing-title">
-              From perception and language<br />
-              to control<br />
-              <em>AI robots a plant can run</em>
-            </h2>
-          </div>
-
-          <footer class="site-footer">
-            <p class="footer-wordmark">RLR Kashiwanoha</p>
-            <div class="footer-details">
-              <p class="footer-contact">
-                <span>Email</span>
-                <a
-                  href="mailto:rlr.kashiwanoha@gmail.com?subject=Website%20inquiry"
-                  aria-label="Email RLR Kashiwanoha"
-                >
-                  rlr.kashiwanoha@gmail.com
-                </a>
+              <h2 class="section-title" id="concept-title">From sequential action plans to prepare-and-release control.</h2>
+              <p class="section-lead">
+                Conventional trajectory optimization arranges several future actions inside a world model and updates them during execution.
+                WMSO raises the planning unit to the skill level: the model evaluates what to start, from which state, and under which conditions.
               </p>
-              <div class="footer-meta">
-                © 2025 RLR 柏の葉
+            </div>
+          </div>
+
+          <div class="comparison reveal">
+            <article class="compare-card">
+              <p class="compare-label">Sequential action planning</p>
+              <h3>Rebuild a sequence of fine-grained future actions.</h3>
+              <div class="compare-sequence" aria-label="Action sequence">
+                <span class="action-dot">aₜ</span><span class="action-line"></span>
+                <span class="action-dot">aₜ₊₁</span><span class="action-line"></span>
+                <span class="action-dot">aₜ₊₂</span><span class="action-line"></span>
+                <span class="action-dot">…</span>
+              </div>
+              <p>Long-horizon optimization becomes high-dimensional, and disturbances or goal changes make an open action sequence stale. Replanning remains useful, but representing everything as low-level actions makes the search space grow rapidly.</p>
+            </article>
+
+            <div class="vs" aria-hidden="true">VS</div>
+
+            <article class="compare-card proposed">
+              <p class="compare-label">WMSO</p>
+              <h3>Prepare a good launch state, then run learned closed-loop skill dynamics.</h3>
+              <div class="skill-sequence" aria-label="Skill-level planning">
+                <div class="skill-node"><small>PREPARATION</small><b>Skill ID, launch state, and parameters</b></div>
+                <span aria-hidden="true">→</span>
+                <div class="skill-node"><small>EXECUTION</small><b>Learned skill corrected by observation</b></div>
+              </div>
+              <p>The world model predicts skill outcomes and transitions, then compares candidates before commit. Execution is not a frozen action tape; it remains closed-loop through sensor feedback.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section dark" id="architecture" aria-labelledby="architecture-title">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-index">02 / Architecture</p>
+            <div>
+              <h2 class="section-title" id="architecture-title">Prepare, validate, release, execute, and hand off.</h2>
+              <p class="section-lead">
+                WMSO separates tentative internal planning state from committed execution state.
+                During preparation, the active skill or a hold controller continues to stabilize the physical system. A new skill is committed only when its contract is satisfied.
+              </p>
+            </div>
+          </div>
+
+          <div class="flow-shell reveal">
+            <div class="flow-topline">
+              <span>skill-level closed-loop orchestration</span>
+              <code>belief → preparation → commit → execution → handoff / recovery</code>
+            </div>
+
+            <div class="wmso-flow">
+              <article class="flow-card prepare">
+                <span class="flow-number">01</span>
+                <h3>Prepare</h3>
+                <p>Search for a launch condition in an output-null planning workspace.</p>
+                <ul class="flow-list">
+                  <li>Candidate skills and parameters</li>
+                  <li>Desired handoff state</li>
+                  <li>Success probability and uncertainty</li>
+                  <li>Bridge and recovery candidates</li>
+                </ul>
+              </article>
+              <div class="flow-arrow" aria-hidden="true"></div>
+
+              <article class="flow-card gate">
+                <span class="flow-number">02</span>
+                <h3>Commit gate</h3>
+                <p>Validate the execution contract. If any condition fails, retain the active controller and prepare again.</p>
+                <ul class="flow-list">
+                  <li>State belongs to the initiation set</li>
+                  <li>Handoff compatibility</li>
+                  <li>Uncertainty within limits</li>
+                  <li>Safety, bundle, and version integrity</li>
+                </ul>
+              </article>
+              <div class="flow-arrow" aria-hidden="true"></div>
+
+              <article class="flow-card release">
+                <span class="flow-number">03</span>
+                <h3>Release</h3>
+                <p>Transform prepared information into a committed execution bundle that the executor is allowed to read.</p>
+                <ul class="flow-list">
+                  <li>Fix the skill identity</li>
+                  <li>Fix launch state and target</li>
+                  <li>Bind controller and monitors</li>
+                  <li>Switch atomically</li>
+                </ul>
+              </article>
+              <div class="flow-arrow" aria-hidden="true"></div>
+
+              <article class="flow-card execute">
+                <span class="flow-number">04</span>
+                <h3>Closed-loop execution</h3>
+                <p>Unfold learned skill dynamics while correcting them with observation feedback.</p>
+                <ul class="flow-list">
+                  <li>Local correction under disturbance</li>
+                  <li>Monitor success, failure, and progress</li>
+                  <li>Apply safety constraints continuously</li>
+                  <li>Stop or recover when required</li>
+                </ul>
+              </article>
+              <div class="flow-arrow" aria-hidden="true"></div>
+
+              <article class="flow-card handoff">
+                <span class="flow-number">05</span>
+                <h3>Handoff</h3>
+                <p>Transfer the terminal state to the next skill. Select a bridge or recovery skill when direct chaining is invalid.</p>
+                <ul class="flow-list">
+                  <li>Evaluate the termination set</li>
+                  <li>Transfer state to the next skill</li>
+                  <li>Represent no-chain explicitly</li>
+                  <li>Begin the next preparation cycle</li>
+                </ul>
+              </article>
+            </div>
+
+            <div class="flow-loop">
+              <div class="loop-note"><strong>While preparing</strong>The active skill, hold controller, or impedance controller continues stabilizing the plant.</div>
+              <div class="loop-note"><strong>While executing</strong>The world model updates its outcome forecast and may prepare the next transition in parallel.</div>
+              <div class="loop-note"><strong>On anomalies</strong>Excess uncertainty, contract mismatch, or failure evidence blocks release by default.</div>
+            </div>
+            <p class="flow-caption">
+              “Output-null” means that tentative planning updates cannot directly affect actuator commands before commit.
+              WMSO does not copy a biological null space literally; it reformulates the idea as a software and control boundary.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="safety" aria-labelledby="safety-title">
+        <div class="shell">
+          <div class="invariant-grid reveal">
+            <div class="invariant-code">
+              <small>Pre-commit output isolation</small>
+              <p class="equation">∂a<sub>t</sub> / ∂p<sub>prep</sub> = 0</p>
+              <p class="equation-note">
+                Updating preparation state p<sub>prep</sub> must not change the current action a<sub>t</sub> before commit.
+                This is enforced structurally: the executor does not read tentative planning state.
+              </p>
+            </div>
+            <div class="invariant-copy">
+              <p class="section-index">03 / Safety boundary</p>
+              <h3 id="safety-title">Safety must not depend only on learning the right behavior.</h3>
+              <p>
+                World models and policies can be wrong. Candidate generation, contract validation, and execution commit are therefore separated so that an uncommitted inference cannot leak into control output.
+              </p>
+              <ul class="check-list">
+                <li><span>Keep the execution bundle immutable before commit</span></li>
+                <li><span>Predict uncertainty, no-chain, and failure explicitly</span></li>
+                <li><span>Do not switch when compatibility or safety conditions fail</span></li>
+                <li><span>Retain observation feedback and low-level safety control during execution</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section tight" id="model" aria-labelledby="model-title">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-index">04 / What the model predicts</p>
+            <div>
+              <h2 class="section-title" id="model-title">A world model predicts more than the next action.</h2>
+              <p class="section-lead">
+                WMSO treats each skill as a semi-Markov option and predicts its result, duration, failure modes, and chainability from initiation to termination.
+                Long tasks are compressed into a shorter sequence of skill decisions rather than control-cycle decisions.
+              </p>
+            </div>
+          </div>
+
+          <div class="model-grid reveal">
+            <article class="model-card"><small>01 / OUTCOME</small><h3>Skill outcome</h3><p>Terminal belief state, object configuration, contact, grasp, tension, and related variables.</p></article>
+            <article class="model-card"><small>02 / TIME & COST</small><h3>Time and cost</h3><p>Duration, energy, switching cost, and the cost of changing an active commitment.</p></article>
+            <article class="model-card"><small>03 / FAILURE</small><h3>Failure and no-chain</h3><p>Failure modes, states that cannot connect forward, and recovery requirements.</p></article>
+            <article class="model-card"><small>04 / UNCERTAINTY</small><h3>Uncertainty</h3><p>Forecast confidence, out-of-distribution state, missing observation, and model disagreement.</p></article>
+            <article class="model-card"><small>05 / HANDOFF</small><h3>Handoff</h3><p>Compatibility with the next initiation set and available bridge skills.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="robotics" aria-labelledby="robotics-title">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-index">05 / Robotics stack</p>
+            <div>
+              <h2 class="section-title" id="robotics-title">WMSO connects world understanding to physical control.</h2>
+              <p class="section-lead">
+                It receives goals and constraints from high-level task decomposition, then turns them into executable skills. Below it, learned policies, residual reinforcement learning, heuristics, and safety controllers move the physical system in closed loop.
+              </p>
+            </div>
+          </div>
+
+          <div class="robotics-layout reveal">
+            <div>
+              <figure class="video-frame">
+                <video controls muted loop playsinline preload="metadata" poster="/assets/ur15-production-line-concept-poster.webp">
+                  <source src="/assets/ur15-production-line-concept.mp4" type="video/mp4" />
+                  Your browser cannot play this video.
+                </video>
+              </figure>
+              <p class="video-license">UR15 production-line concept visualization. Existing media retained from this site.</p>
+            </div>
+
+            <ol class="stack-list">
+              <li><span class="stack-number">L3</span><div><h3>Perception, goals, and task decomposition</h3><p>Estimate the situation from vision and language, then produce objectives, constraints, and candidate subtasks.</p></div></li>
+              <li><span class="stack-number">W</span><div><h3>WMSO</h3><p>Imagine skill outcomes in a world model and orchestrate selection, preparation, transition, and recovery.</p></div></li>
+              <li><span class="stack-number">L2</span><div><h3>Learned closed-loop skills</h3><p>Execute skills acquired by imitation or reinforcement learning while correcting them from observation feedback.</p></div></li>
+              <li><span class="stack-number">L1</span><div><h3>Heuristics and safety control</h3><p>Provide deterministic boundaries such as contact maintenance, force limits, stop, and hold behavior.</p></div></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="section dark tight" id="origin" aria-labelledby="origin-title">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-index">06 / Conceptual origin</p>
+            <div>
+              <h2 class="section-title" id="origin-title">From neural geometry to an engineered execution boundary.</h2>
+              <p class="section-lead">
+                The conceptual inspiration is the motor-cortex account in which preparatory activity occupies an output-null space and recurrent dynamics move into output-potent directions after a go cue.
+                WMSO is an engineering proposal that transfers this pattern to model-based reinforcement learning and skill orchestration; it is not a literal implementation of the biological mechanism.
+              </p>
+              <div class="hero-actions">
+                <a class="button primary" href="https://www.nature.com/articles/s41583-024-00796-z" rel="noreferrer">Review article</a>
+                <a class="button" href="https://www.youtube.com/watch?v=gAm5Athct6Y" rel="noreferrer">Explainer video</a>
               </div>
             </div>
-          </footer>
+          </div>
+        </div>
+      </section>
+
+      <section class="section dark" id="direction" aria-labelledby="direction-title">
+        <div class="shell direction reveal">
+          <h2 id="direction-title">Do not only<br />plan actions.<br />Prepare a state<br />that can act.</h2>
+          <div class="direction-copy">
+            <p>
+              WMSO is not a single monolithic universal policy. It prepares predictable and verifiable skills, connects them across explicit safety boundaries, and returns to recoverable paths when execution fails.
+            </p>
+            <strong>Prepare safely. Commit explicitly. Execute closed-loop.</strong>
+          </div>
         </div>
       </section>
     </main>
 
-    <script>
-      (() => {
-        const header = document.querySelector("#site-header");
-        const menuButton = document.querySelector("#menu-button");
-        const nav = document.querySelector("#site-nav");
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <div class="footer-brand">WMSO · RLR Kashiwa-no-ha</div>
+        <div class="footer-meta">
+          <span>World-Model-Based Skill Orchestration</span>
+          <span>Research architecture under development</span>
+          <span>© <span data-year>2026</span></span>
+        </div>
+      </div>
+    </footer>
 
-        if (window.location.hash) {
-          const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
-          if (target) {
-            const root = document.documentElement;
-            const previousScrollBehavior = root.style.scrollBehavior;
-            root.style.scrollBehavior = "auto";
-            requestAnimationFrame(() => {
-              target.scrollIntoView({ block: "start" });
-              root.style.scrollBehavior = previousScrollBehavior;
-            });
-          }
-        }
-
-        const updateHeader = () => header.classList.toggle("is-scrolled", window.scrollY > 20);
-        updateHeader();
-        window.addEventListener("scroll", updateHeader, { passive: true });
-
-        menuButton.addEventListener("click", () => {
-          const isOpen = menuButton.getAttribute("aria-expanded") === "true";
-          menuButton.setAttribute("aria-expanded", String(!isOpen));
-          menuButton.setAttribute("aria-label", isOpen ? "Open menu" : "Close menu");
-          nav.classList.toggle("is-open", !isOpen);
-        });
-
-        nav.querySelectorAll("a").forEach((link) => {
-          link.addEventListener("click", () => {
-            menuButton.setAttribute("aria-expanded", "false");
-            menuButton.setAttribute("aria-label", "Open menu");
-            nav.classList.remove("is-open");
-          });
-        });
-
-        const sectionLinks = [...nav.querySelectorAll('a[href^="#"]')]
-          .map((link) => {
-            const target = document.querySelector(link.getAttribute("href"));
-            return target ? { link, target } : null;
-          })
-          .filter(Boolean);
-
-        const updateActiveNavigation = () => {
-          const activationLine = window.scrollY + window.innerHeight * 0.38;
-          let activeLink = null;
-
-          sectionLinks.forEach(({ link, target }) => {
-            const targetTop = target.getBoundingClientRect().top + window.scrollY;
-            if (targetTop <= activationLine) activeLink = link;
-          });
-
-          sectionLinks.forEach(({ link }) => {
-            link.classList.toggle("is-active", link === activeLink);
-          });
-        };
-
-        updateActiveNavigation();
-        window.addEventListener("scroll", updateActiveNavigation, { passive: true });
-        window.addEventListener("resize", updateActiveNavigation);
-
-        const filmVideo = document.querySelector("#ur15-concept-film-video");
-        const filmToggle = document.querySelector(".concept-film-toggle");
-        if (filmVideo && filmToggle) {
-          let pausedByUser = reduceMotion;
-          const updateFilmToggle = () => {
-            const isPaused = filmVideo.paused;
-            filmToggle.textContent = isPaused
-              ? filmToggle.dataset.labelPlay
-              : filmToggle.dataset.labelPause;
-            filmToggle.setAttribute("aria-pressed", String(isPaused));
-          };
-          let filmOnScreen = true;
-          const playTrainingVideo = () => {
-            const playback = filmVideo.play();
-            if (playback) playback.catch(updateFilmToggle);
-          };
-
-          filmVideo.addEventListener("play", updateFilmToggle);
-          filmVideo.addEventListener("pause", updateFilmToggle);
-          // Nothing here should be able to leave the poster up. Start as soon
-          // as there is enough film to start, and if the file itself failed to
-          // arrive — a request that raced a deploy, a dropped connection — ask
-          // for it once more instead of showing a still.
-          filmVideo.addEventListener("canplay", () => {
-            if (!pausedByUser && filmOnScreen && filmVideo.paused) {
-              playTrainingVideo();
-            }
-          });
-          let filmReloaded = false;
-          filmVideo.addEventListener("error", () => {
-            if (filmReloaded) return;
-            filmReloaded = true;
-            window.setTimeout(() => {
-              filmVideo.load();
-              if (!pausedByUser && filmOnScreen) playTrainingVideo();
-            }, 1500);
-          });
-          filmToggle.addEventListener("click", () => {
-            if (filmVideo.paused) {
-              pausedByUser = false;
-              playTrainingVideo();
-            } else {
-              pausedByUser = true;
-              filmVideo.pause();
-            }
-          });
-
-          if (reduceMotion) {
-            filmVideo.removeAttribute("autoplay");
-            filmVideo.pause();
-            filmVideo.currentTime = 0;
-          } else if ("IntersectionObserver" in window) {
-            // Begin fetching while the film is still a screenful away, so it
-            // is running by the time it is scrolled to rather than showing
-            // its poster for the first few seconds.
-            const filmPreloader = new IntersectionObserver(
-              ([entry]) => {
-                if (!entry.isIntersecting) return;
-                filmPreloader.disconnect();
-                if (filmVideo.preload !== "auto") {
-                  filmVideo.preload = "auto";
-                  filmVideo.load();
-                }
-              },
-              { rootMargin: "600px 0px" }
-            );
-            filmPreloader.observe(filmVideo);
-
-            const videoObserver = new IntersectionObserver(
-              ([entry]) => {
-                filmOnScreen = entry.isIntersecting;
-                if (!filmOnScreen) {
-                  filmVideo.pause();
-                } else if (!pausedByUser) {
-                  playTrainingVideo();
-                }
-              },
-              // Any sliver on screen keeps it running. A larger threshold
-              // stops the film while the caption under it is being read,
-              // which reads as a still rather than as a pause.
-              { threshold: 0.01 }
-            );
-            videoObserver.observe(filmVideo);
-          }
-          updateFilmToggle();
-        }
-
-        const revealItems = document.querySelectorAll(".reveal");
-        if (reduceMotion || !("IntersectionObserver" in window)) {
-          revealItems.forEach((item) => item.classList.add("is-visible"));
-          return;
-        }
-
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (!entry.isIntersecting) return;
-              entry.target.classList.add("is-visible");
-              observer.unobserve(entry.target);
-            });
-          },
-          { threshold: 0.14 }
-        );
-        revealItems.forEach((item) => observer.observe(item));
-      })();
-    </script>
+    <script src="/assets/site.js" defer></script>
   </body>
 </html>
