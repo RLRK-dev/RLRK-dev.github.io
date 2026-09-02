@@ -1,0 +1,81 @@
+name: One-time VLA copy update
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - wmso-vla-copy-update.trigger
+
+permissions:
+  contents: write
+
+jobs:
+  update-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update the VLA heading and description
+        shell: python
+        run: |
+          from pathlib import Path
+
+          replacements = {
+              Path("index.html"): [
+                  (
+                      '<h3><small>Vision-language-action</small>見て、<br />言語と結びつけ、<br />動かす</h3>',
+                      '<h3><small>Vision-language-action</small>見て、<br />理解し、<br />動きをつなぐ</h3>',
+                  ),
+                  (
+                      '画像観測から物体、姿勢、運動、関係性を推定して状態表現へ変換し、言語指示とタスク文脈を同じ表現へ接地します。知覚と行動が一つの条件を共有します。',
+                      '画像観測から物体、姿勢、運動、関係性を捉え、言語指示とタスク文脈を一つの状況表現に統合します。理解した状況を、適切な行動の選択とスキルの接続へ反映します。',
+                  ),
+              ],
+              Path("en/index.html"): [
+                  (
+                      '<h3><small>Vision-language-action</small>See it,<br />tie it to language,<br />move</h3>',
+                      '<h3><small>Vision-language-action</small>See,<br />understand,<br />connect actions</h3>',
+                  ),
+                  (
+                      'We estimate objects, poses, motion and relationships from visual observations and turn them into state representations, then ground language instructions and task context in those same representations, so perception and action share one set of conditions.',
+                      'We infer objects, poses, motion and relationships from visual observations, then integrate language instructions and task context into a unified representation of the situation. That shared understanding informs action selection and how skills are connected.',
+                  ),
+              ],
+          }
+
+          for path, pairs in replacements.items():
+              text = path.read_text(encoding="utf-8")
+              for old, new in pairs:
+                  count = text.count(old)
+                  if count != 1:
+                      raise SystemExit(f"Expected one exact match in {path}, found {count}: {old}")
+                  text = text.replace(old, new)
+              path.write_text(text, encoding="utf-8")
+
+      - name: Verify the change scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          changed="$(git diff --name-only | sort)"
+          expected=$'en/index.html\nindex.html'
+          if [[ "$changed" != "$expected" ]]; then
+            printf 'Unexpected changed files:\n%s\n' "$changed" >&2
+            exit 1
+          fi
+          git diff --stat
+
+      - name: Commit the update and remove one-time files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "RLRK-dev"
+          git config user.email "satesare603@gmail.com"
+          rm -f wmso-vla-copy-update.trigger .github/workflows/wmso-vla-copy-update.yml
+          git add -A
+          git commit -m "Refine VLA message and grounding copy"
+          git push origin HEAD:main
