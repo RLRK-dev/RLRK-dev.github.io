@@ -1,0 +1,67 @@
+name: One-time WMSO copy update
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - wmso-copy-update.trigger
+
+permissions:
+  contents: write
+
+jobs:
+  update-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update only the WMSO paragraphs
+        shell: python
+        run: |
+          from pathlib import Path
+
+          replacements = {
+              Path("index.html"): (
+                  "世界モデルに基づき、強化学習と模倣学習で学習したスキルを高位の選択肢として扱います。実行中の状況を再評価しながら、スキルの選択、遷移、回復を統合します。状況の変化に即応できるスキル切り替えを目指します。",
+                  "世界モデルに基づき、強化学習と模倣学習で学習したスキルを高位の選択肢として扱います。細かな行動列を逐次計画するのではなく、次に用いるスキルに適した実行初期状態を安全に準備し、条件が整った時点で学習済みスキルの動作生成を開始します。実行中の状況を再評価しながら、スキルの選択、遷移、回復を統合します。状況の変化に即応できるスキル切り替えを目指します。",
+              ),
+              Path("en/index.html"): (
+                  "Using a world model, we treat skills learned through reinforcement and imitation learning as high-level options. As execution unfolds, the system reassesses the situation and integrates skill selection, transition, and recovery. Our goal is responsive skill switching as conditions change.",
+                  "Using a world model, we treat skills learned through reinforcement and imitation learning as high-level options. Rather than planning fine-grained action sequences step by step, the system safely prepares a suitable execution initial state for the next skill and starts the learned skill's motion generation once the required conditions are met. As execution unfolds, the system reassesses the situation and integrates skill selection, transition, and recovery. Our goal is responsive skill switching as conditions change.",
+              ),
+          }
+
+          for path, (old, new) in replacements.items():
+              text = path.read_text(encoding="utf-8")
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected one exact match in {path}, found {count}")
+              path.write_text(text.replace(old, new), encoding="utf-8")
+
+      - name: Verify the change scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          changed="$(git diff --name-only | sort)"
+          expected=$'en/index.html\nindex.html'
+          if [[ "$changed" != "$expected" ]]; then
+            printf 'Unexpected changed files:\n%s\n' "$changed" >&2
+            exit 1
+          fi
+          git diff --stat
+
+      - name: Commit the minimal update and remove one-time files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "RLRK-dev"
+          git config user.email "satesare603@gmail.com"
+          rm -f wmso-copy-update.trigger .github/workflows/wmso-copy-update.yml
+          git add -A
+          git commit -m "Clarify WMSO preparation and skill execution"
+          git push origin HEAD:main
