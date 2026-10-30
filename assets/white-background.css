@@ -1,0 +1,10 @@
+
+/* Light page canvas requested by the user on 2026-10-29. */
+html:not(.report-theme-dark){background:#fff;color-scheme:light}
+body:not(.report-dark){--paper:#fff;--paper-deep:#fff;--paper-soft:#fff;background:#fff}
+body:not(.report-dark)::before{display:none}
+body:not(.report-dark) .site-header,
+body:not(.report-dark) .site-header.is-scrolled{background:#fff}
+body:not(.report-dark) .hero#introduction::before{background:#fff;mask-image:none;-webkit-mask-image:none}
+body:not(.report-dark) .core{background:#fff}
+body:not(.report-dark) :is(.core-card--vla,.case-card,.offering-card,.delivery-stage,.tools-entry){background:#fff}
