@@ -1934,16 +1934,12 @@ SPDX-License-Identifier: BSD-3-Clause
               </div>
               <div class="core-card--wmso-content core-card--architecture-content">
                 <h3 id="technology-wmso-title"><small>Skill orchestration</small>Predict the result and select the next operation</h3>
-                <p>Skill orchestration predicts the state after a motion, selects the next skill, and handles connections between skills and recovery from failures. WMSO, which we are developing, is one such proposal. For example, it predicts whether the other hand can support a part after it is moved, then selects the next motion.</p>
+                <p>Skill orchestration predicts the state after a motion, selects the next skill, and handles connections between skills and recovery from failures. WMSO, which we are developing, is one such proposal. For example, it predicts whether the other hand can support a part after it is moved, then selects the next motion. Selection or reselection among multiple candidates remains unimplemented.</p>
               </div>
             <span class="core-card-link">Read the explanation →</span></a><!-- orchestration-group:head-end --><div class="core-group-items">
               <a class="core-card core-card--worldmodel reveal link-disabled" data-step="">
               <h3 id="technology-worldmodel-title"><small>World model</small>Predict the state after a skill</h3>
               <p>A model that predicts the state of the robot and the workpiece after a skill is executed. For each candidate skill, it predicts the resulting state and the prospect of reaching the goal. It is not included in the current research implementation (unimplemented).</p>
-            <span class="core-card-link">Read the explanation →</span></a>
-              <a class="core-card core-card--selection reveal link-disabled" data-step="">
-              <h3 id="technology-selection-title"><small>Skill selection and recovery</small>Select the next skill and recover from failures</h3>
-              <p>Based on the predictions, it selects the next skill toward the goal. When a skill fails or the state differs from the prediction, it reselects an executable recovery skill or another path, and moves to protective actions such as stopping or holding when it cannot continue. Current sequential-motion tests only record skill starts, success, failure and timeouts; autonomous selection, reselection and replanning after failure are unimplemented.</p>
             <span class="core-card-link">Read the explanation →</span></a>
             </div></div><!-- orchestration-group:end -->
 

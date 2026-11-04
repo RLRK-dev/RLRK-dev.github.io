@@ -1925,16 +1925,12 @@ SPDX-License-Identifier: BSD-3-Clause
             <!-- orchestration-group:start --><div class="core-group core-group--orchestration reveal" id="wmso" data-step="02" role="group" aria-labelledby="technology-wmso-title"><a class="core-group-head link-disabled">
               <div class="core-card--wmso-content core-card--architecture-content">
                 <h3 id="technology-wmso-title"><small>スキルオーケストレーション</small></h3>
-                <p>動作後の状態を予測して次に実行するスキルを選び、スキル間の接続や失敗時の回復を扱う制御です。当社が開発しているWMSOはその一つの構想です。例えば、部品を移動した後にもう一方のハンドで支持できるかを予測して、次の動作を選びます。</p>
+                <p>動作後の状態を予測して次に実行するスキルを選び、スキル間の接続や失敗時の回復を扱う制御です。当社が開発しているWMSOはその一つの構想です。例えば、部品を移動した後にもう一方のハンドで支持できるかを予測して、次の動作を選びます。複数候補からの選択・再選択は未実装です。</p>
               </div>
             <span class="core-card-link">詳細説明を見る →</span></a><!-- orchestration-group:head-end --><div class="core-group-items">
               <a class="core-card core-card--worldmodel reveal link-disabled" data-step="">
               <h3 id="technology-worldmodel-title"><small>世界モデル</small></h3>
               <p>スキルを実行した後の、ロボットと対象物の状態を予測するモデルです。候補のスキルごとに、実行後の状態と、目標に到達できる見込みを予測します。現在の研究実装には含まれていません（未実装）。</p>
-            <span class="core-card-link">詳細説明を見る →</span></a>
-              <a class="core-card core-card--selection reveal link-disabled" data-step="">
-              <h3 id="technology-selection-title"><small>スキルの選択と回復</small></h3>
-              <p>予測をもとに、目標に向けて次に実行するスキルを選びます。失敗や予測と異なる状態では、実行できる回復のスキルや別の道筋を選び直し、継続できない場合は停止や保持など保護のための動作へ移ります。現在の連続動作試験はスキルの開始・成功・失敗・期限超過の記録までで、自律的な選択・再選択と失敗後の再計画は未実装です。</p>
             <span class="core-card-link">詳細説明を見る →</span></a>
             </div></div><!-- orchestration-group:end -->
 
